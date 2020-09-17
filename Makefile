@@ -5,6 +5,8 @@ TEMPLATE_OBJECT_KEY="example-templates.zip"
 
 BUCKET="svozza-local-cfn"
 
+LAYER_JAR="TokenVendingLayer.jar"
+
 ARTEFACT_BUCKET=""
 
 packaged.yaml: template.yaml
@@ -33,6 +35,9 @@ templates.zip: templates/*
 
 build-java:
 	mvn clean install
+
+upload-lambda-layer:
+	aws s3 cp TokenVendingLayer/target/$(LAYER_JAR)  s3://$(BUCKET)/$(LAYER_JAR)
 
 clean: 
 	# Delete bootstrapped templates.zip
