@@ -1,8 +1,8 @@
 package tenant.vendinglayer.policy;
 
-import com.amazon.aws.partners.saasfactory.policy.OpenScopedPolicyGenerator;
 import com.amazon.aws.partners.saasfactory.policy.PolicyGenerator;
-import jdk.jshell.spi.ExecutionControl;
+import com.amazon.aws.partners.saasfactory.template.PolicyTemplateProcessor;
+import tenant.vendinglayer.template.PolicyLoader;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -13,26 +13,32 @@ import java.util.Map;
 
 public class FilePolicyGenerator implements PolicyGenerator {
 
-    private String tenant;
-    private File templateDir;
-    private Map<String, String> data;
+    private final File templateDir;
+    private final Map<String, String> data;
 
-    public FilePolicyGenerator(File templateDir, String tenant, Map<String, String> data) {
-        this.tenant = tenant;
+    public FilePolicyGenerator(File templateDir, Map<String, String> data) {
         this.data = data;
         this.templateDir = templateDir;
     }
 
     public String generatePolicy() {
-        return null;
+        String statements = PolicyLoader.assemblePolicyTemplates(templateDir);
+
+        PolicyTemplateProcessor policyTemplateProcessor =
+            PolicyTemplateProcessor.builder()
+                .data(data)
+                .templates(statements)
+                .build();
+
+        return policyTemplateProcessor.getTenantScopedPolicyTemplate();
     }
 
     public PolicyGenerator tenant(String tenant) {
-        this.tenant = tenant;
+        data.put("tenant", tenant);
         return this;
     }
 
     public String getTenant() {
-        return tenant;
+        return data.get("tenant");
     }
 }
