@@ -1,8 +1,6 @@
 package tenant.vendinglayer.template;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -23,7 +21,7 @@ public class PolicyLoader {
             while ((str = reader.readLine()) != null) {
                 sb.append(str).append("\n");
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
         }
         return sb.toString();
