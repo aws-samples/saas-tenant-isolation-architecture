@@ -36,7 +36,10 @@ templates.zip: templates/*
 build-java:
 	mvn clean install
 
-upload-lambda-layer:
+build-layer:
+	cd TokenVendingLayer && mvn clean install
+
+upload-lambda-layer: build-layer
 	aws s3 cp TokenVendingLayer/target/$(LAYER_JAR)  s3://$(BUCKET)/$(LAYER_JAR)
 
 clean: 
