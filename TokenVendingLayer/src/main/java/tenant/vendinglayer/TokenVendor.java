@@ -107,13 +107,6 @@ public class TokenVendor {
         return awsCredentialsProvider;
     }
 
-    public static void main(String[] args) {
-        TokenVendor tv = new TokenVendor();
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzdm96emEiLCJpYXQiOjE2MDAxNjI2NTMsImV4cCI6MTYzMTY5ODY1MywiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsImN1c3RvbTp0ZW5hbnRfaWQiOiIxMjM0NTY3ODkifQ.AH2QEdB0TgvRgAkbo8aOXSgyVT62NTPgql7r4Yf2Xek");
-        tv.vendTokenNoJwtValidation(headers);
-    }
-
     public String getTenant() {
         return tenant;
     }
