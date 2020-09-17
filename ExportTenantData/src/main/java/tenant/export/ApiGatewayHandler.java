@@ -1,9 +1,5 @@
 package tenant.export;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 import tenant.vendinglayer.TokenVendor;
@@ -15,11 +11,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import software.amazon.awssdk.core.sync.ResponseTransformer;
-import software.amazon.awssdk.http.urlconnection.UrlConnectionHttpClient;
-import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.GetObjectRequest;
-import net.lingala.zip4j.ZipFile;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
@@ -36,13 +27,6 @@ public class ApiGatewayHandler implements RequestHandler<APIGatewayProxyRequestE
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
-    private final S3Client s3 = S3Client.builder().httpClientBuilder(UrlConnectionHttpClient.builder()).build();
-    private final String role = System.getenv("ROLE");
-    private final String templateBucket = System.getenv("TEMPLATE_BUCKET");
-    private final String templateKey = System.getenv("TEMPLATE_KEY");
-    private final String tmp = "/tmp";
-    private final Path templateFilePath = Paths.get(tmp + "/templates.zip");
-
     public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent input, final Context context) {
         switch(input.getHttpMethod().toLowerCase()) {
             case "get":
@@ -56,12 +40,11 @@ public class ApiGatewayHandler implements RequestHandler<APIGatewayProxyRequestE
     };
 
     public APIGatewayProxyResponseEvent handlePostRequest(final APIGatewayProxyRequestEvent input, final Context context) {
-        getTemplateFile(context);
-
-        // we vending the token by extracting tenant ID from the JWT token contained in the request headers
+        // we vending the token by extracting the tenant ID from the JWT token contained in
+        // the request headers
         TokenVendor tokenVendor = new TokenVendor();
         final AwsCredentialsProvider awsCredentialsProvider =
-            tokenVendor.vendTokenNoJwtValidation(input.getHeaders(), role);
+            tokenVendor.vendTokenNoJwtValidation(input.getHeaders());
 
         // we parse the body of the POST request, currently we only accept a 'name' parameter to
         // be written to DynamoDB, anything else will be ignored
@@ -92,12 +75,11 @@ public class ApiGatewayHandler implements RequestHandler<APIGatewayProxyRequestE
     }
 
     public APIGatewayProxyResponseEvent handleGetRequest(final APIGatewayProxyRequestEvent input, final Context context) {
-        getTemplateFile(context);
-
-        // we vending the token by extracting tenant ID from the JWT token contained in the request headers
+        // we vending the token by extracting the tenant ID from the JWT token contained in
+        // the request headers
         TokenVendor tokenVendor = new TokenVendor();
         final AwsCredentialsProvider awsCredentialsProvider =
-            tokenVendor.vendTokenNoJwtValidation(input.getHeaders(), role);
+            tokenVendor.vendTokenNoJwtValidation(input.getHeaders());
 
         String tenant = tokenVendor.getTenant();
         logger.info("TENANT ID: " + tenant);
@@ -125,16 +107,6 @@ public class ApiGatewayHandler implements RequestHandler<APIGatewayProxyRequestE
             .withStatusCode(200);
     }
 
-    private String createInternalServerErrorResponse(String requestId, String message) {
-        try {
-            GatewayError error = new GatewayError("InternalServerError",
-                "500", requestId, message);
-            return mapper.writeValueAsString(error);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Error encoding JSON response");
-        }
-    }
-
     private String createBadRequestResponse(String requestId, String message) {
         try {
             GatewayError error = new GatewayError("Bad Request",
@@ -142,24 +114,6 @@ public class ApiGatewayHandler implements RequestHandler<APIGatewayProxyRequestE
             return mapper.writeValueAsString(error);
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Error encoding JSON response");
-        }
-    }
-
-    private void getTemplateFile(Context context) {
-        // we only download the policies from S3 if it doesn't exist on the filesystem already
-        // from a previous lambda invocation
-        if(Files.notExists(templateFilePath)) {
-            logger.info("Templates zip file not found, downloading from S3...");
-            s3.getObject(GetObjectRequest.builder().bucket(templateBucket).key(templateKey).build(),
-                ResponseTransformer.toFile(templateFilePath));
-            try {
-                ZipFile zipFile = new ZipFile(templateFilePath.toFile());
-                zipFile.extractAll(tmp + "/policies");
-            } catch (IOException e) {
-                logger.error("Could not unzip template file.", e);
-                throw new RuntimeException(createInternalServerErrorResponse(context.getAwsRequestId(),
-                    "Error unzipping file."));
-            }
         }
     }
 }

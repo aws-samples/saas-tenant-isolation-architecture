@@ -49,19 +49,9 @@
             <version>${software.amazon.awssdk.version}</version>
         </dependency>
         <dependency>
-            <groupId>software.amazon.awssdk</groupId>
-            <artifactId>s3</artifactId>
-            <version>${software.amazon.awssdk.version}</version>
-        </dependency>
-        <dependency>
             <groupId>io.symphonia</groupId>
             <artifactId>lambda-logging</artifactId>
             <version>1.0.3</version>
-        </dependency>
-        <dependency>
-            <groupId>net.lingala.zip4j</groupId>
-            <artifactId>zip4j</artifactId>
-            <version>2.6.2</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
