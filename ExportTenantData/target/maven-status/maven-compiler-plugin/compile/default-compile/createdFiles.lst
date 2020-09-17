@@ -1,0 +1,4 @@
+tenant/export/models/TenantInfo.class
+tenant/export/errors/GatewayError.class
+tenant/export/ApiGatewayHandler$1.class
+tenant/export/ApiGatewayHandler.class

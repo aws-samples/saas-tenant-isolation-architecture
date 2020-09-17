@@ -1,0 +1,4 @@
+tenant/watchdog/models/Event.class
+tenant/watchdog/models/Event$RequestParameters.class
+tenant/watchdog/models/Event$Detail.class
+tenant/watchdog/WatchdogHandler.class

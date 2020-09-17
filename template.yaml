@@ -1,0 +1,436 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+
+Description: Govern access to tenants data in your SaaS application using AWS IAM.
+
+Globals:
+  Function:
+    Timeout: 30
+
+Parameters:
+  DeploymentS3Bucket:
+    Type: String
+    Description: Name of the bucket containing the zipped lambda code
+
+  TemplateBucketName:
+    Type: String
+    Description: Name of the bucket containing the zipped IAM Templates to initialise the repository
+
+  TemplateObjectKey:
+    Type: String
+    Description: Object key of the zipped IAM templates to initialise the repository
+
+Resources:
+  TokenVendingLambdaLayer:
+    Type: AWS::Lambda::LayerVersion
+    Properties:
+      LayerName: token-vending-layer
+      Description: Token Vendor Layer
+      Content:
+        S3Bucket: !Ref DeploymentS3Bucket
+        S3Key: token-vending-layer.jar
+      CompatibleRuntimes:
+        - java11
+
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: '/'
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: ExportTenantDataFunctionS3Policy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Sid: TemplateBucketPolicy
+                Effect: Allow
+                Action:
+                  - s3:getObject
+                Resource: !Sub ${TemplateOutputBucket.Arn}/*
+
+  ExportTenantDynamoRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: '/'
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: !GetAtt LambdaExecutionRole.Arn
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: ExportTenantDataFunctionDdbPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Sid: TemplateDynamoDbPolicy
+                Effect: Allow
+                Action:
+                  - dynamodb:GetItem
+                  - dynamodb:PutItem
+                Resource: !Sub ${DynamoDBClientStore.Arn}
+
+  ExportTenantDataGetFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ExportTenantData/target/ExportTenantData-1.0.jar
+      Handler: tenant.export.ApiGatewayHandler::handleRequest
+      MemorySize: 2048
+      Runtime: java11
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Environment:
+        Variables:
+          ROLE: !GetAtt ExportTenantDynamoRole.Arn
+          TEMPLATE_BUCKET: !Ref TemplateOutputBucket
+          TEMPLATE_KEY: policies/templates.zip
+          S3_BUCKET: !Ref TemplateOutputBucket
+          DB_TABLE: !Ref DynamoDBClientStore
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /tenant
+            Method: get
+            RequestParameters:
+              - method.request.header.Authorization
+
+  ExportTenantDataPostFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ExportTenantData/target/ExportTenantData-1.0.jar
+      Handler: tenant.export.ApiGatewayHandler::handleRequest
+      MemorySize: 2048
+      Runtime: java11
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Environment:
+        Variables:
+          ROLE: !GetAtt ExportTenantDynamoRole.Arn
+          TEMPLATE_BUCKET: !Ref TemplateOutputBucket
+          TEMPLATE_KEY: policies/templates.zip
+          S3_BUCKET: !Ref TemplateOutputBucket
+          DB_TABLE: !Ref DynamoDBClientStore
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /tenant
+            Method: post
+            RequestParameters:
+              - method.request.header.Authorization
+
+  WatchdogSnsTopic:
+    Type: AWS::SNS::Topic
+
+  AssumeRoleWatchdogFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: AssumeRoleWatchDog/target/AssumeRoleWatchdog-1.0.jar
+      Handler: tenant.watchdog.WatchdogHandler::handleRequest
+      Runtime: java11
+      MemorySize: 2048
+      Environment:
+        Variables:
+          SNS_TOPIC: !Ref WatchdogSnsTopic
+      Policies:
+        - AWSLambdaExecute
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - sns:Publish
+              Resource: !Ref WatchdogSnsTopic
+      Events:
+        AssumeRoleEvent:
+          Type: EventBridgeRule
+          Properties:
+            Pattern:
+              source:
+                - aws.sts
+              detail-type:
+                - AWS API Call via CloudTrail
+              detail:
+                eventSource:
+                  - sts.amazonaws.com
+
+  TargetBucket:
+    Type: AWS::S3::Bucket
+
+  DynamoDBClientStore:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: tenant-id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: tenant-id
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+
+  # Template Pipeline
+  TemplateUploadPipeline:
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      RoleArn: !GetAtt TemplateUploadPipelineRole.Arn
+      ArtifactStore:
+        Location: !Ref PipelineArtefactBucket
+        Type: S3
+      Stages:
+        - Name: Source
+          Actions:
+            - Name: Source
+              ActionTypeId:
+                Category: Source
+                Owner: AWS
+                Provider: CodeCommit
+                Version: "1"
+              Configuration:
+                BranchName: "master"
+                PollForSourceChanges: false
+                RepositoryName: !GetAtt TemplateRepository.Name
+              OutputArtifacts:
+                - Name: src
+              RunOrder: 1
+        - Name: Build
+          Actions:
+            - Name: Build
+              ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Provider: CodeBuild
+                Version: "1"
+              Configuration:
+                ProjectName: !Ref TemplateCodeBuildProject
+              InputArtifacts:
+                - Name: src
+              OutputArtifacts:
+                - Name: buildoutput
+              RunOrder: 1
+        - Name: Deploy
+          Actions:
+            - Name: Deploy
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Provider: S3
+                Version: "1"
+              Configuration:
+                BucketName: !Ref TemplateOutputBucket
+                Extract: true
+                ObjectKey: policies
+              InputArtifacts:
+                - Name: buildoutput
+              RunOrder: 1
+
+  TemplateUploadPipelineRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          Effect: Allow
+          Principal:
+            Service: codepipeline.amazonaws.com
+          Action: sts:AssumeRole
+      Policies:
+        - PolicyDocument:
+            Statement:
+              - Effect: Allow
+                Resource:
+                  - !Sub arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/${TemplateCodeBuildProject}
+                Action:
+                  - codebuild:BatchGetBuilds
+                  - codebuild:StartBuild
+              - Effect: Allow
+                Resource: !GetAtt TemplateRepository.Arn
+                Action:
+                  - codecommit:GetBranch
+                  - codecommit:GetCommit
+                  - codecommit:UploadArchive
+                  - codecommit:GetUploadArchiveStatus
+                  - codecommit:CancelUploadArchive
+              - Effect: Allow
+                Resource:
+                  - !Sub arn:aws:s3:::${PipelineArtefactBucket}/*
+                  - !Sub arn:aws:s3:::${TemplateOutputBucket}/*
+                Action:
+                  - s3:PutObject* # TODO Change this
+                  - s3:GetObject*
+          PolicyName: root
+
+  TemplateCodeBuildProject:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      ServiceRole: !GetAtt TemplateCodeBuildProjectRole.Arn
+      Name: !Sub ${AWS::StackName}-TemplateUpload
+      Description: !Sub "Template Upload Project for ${AWS::StackName}"
+      Artifacts:
+        Type: CODEPIPELINE
+      EncryptionKey: alias/aws/s3
+      Environment:
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/amazonlinux2-x86_64-standard:3.0
+        Type: LINUX_CONTAINER
+      Source:
+        Type: CODEPIPELINE
+        BuildSpec: buildspec.yaml
+      Cache:
+        Type: LOCAL
+        Modes:
+          - LOCAL_CUSTOM_CACHE
+          - LOCAL_DOCKER_LAYER_CACHE
+
+  TemplateCodeBuildProjectRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: /
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: codebuild.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: root
+          PolicyDocument:
+            Statement:
+              - Resource: "*"
+                Effect: Allow
+                Action: logs:CreateLogGroup
+
+              - Resource: !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:*
+                Effect: Allow
+                Action:
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+
+              - Resource: !Sub arn:aws:s3:::${PipelineArtefactBucket}/*
+                Effect: Allow
+                Action:
+                  - s3:GetObject*
+                  - s3:PutObject*
+
+              - Resource: !Sub arn:aws:s3:::${PipelineArtefactBucket}
+                Effect: Allow
+                Action: s3:ListBucket
+
+              - Resource: !Sub arn:aws:s3:::${TemplateOutputBucket}
+                Effect: Allow
+                Action: s3:PutObject
+
+              # - Resource: !Sub arn:aws:sts::${AWS::AccountId}:assumed-role/*/*
+              #   Effect: Allow
+              #   Action: sts:GetServiceBearerToken
+
+  TemplateOutputBucket:
+    Type: AWS::S3::Bucket
+
+  TemplateRepository:
+    Type: AWS::CodeCommit::Repository
+    Properties:
+      RepositoryName: !Sub "${AWS::StackName}IAMTemplates"
+      Code:
+        S3:
+          Bucket: !Ref TemplateBucketName
+          Key: !Ref TemplateObjectKey
+
+  SourceEvent:
+    Type: AWS::Events::Rule
+    Properties:
+      Description: Rule for Amazon CloudWatch Events to detect changes to the source repository and trigger pipeline execution
+      EventPattern:
+        detail:
+          event:
+            - referenceCreated
+            - referenceUpdated
+          referenceName:
+            - master
+          referenceType:
+            - branch
+        detail-type:
+          - CodeCommit Repository State Change
+        resources:
+          - !Sub arn:${AWS::Partition}:codecommit:${AWS::Region}:${AWS::AccountId}:${TemplateRepository.Name}
+        source:
+          - aws.codecommit
+      Name: !Sub ${AWS::StackName}-SourceEvent
+      State: ENABLED
+      Targets:
+        - Arn: !Sub arn:${AWS::Partition}:codepipeline:${AWS::Region}:${AWS::AccountId}:${TemplateUploadPipeline}
+          Id: ProjectPipelineTarget
+          RoleArn: !GetAtt "SourceEventRole.Arn"
+
+  SourceEventRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: events.amazonaws.com
+            Sid: 1
+      Policies:
+        - PolicyDocument:
+            Statement:
+              - Action: codepipeline:StartPipelineExecution
+                Effect: Allow
+                Resource: !Sub arn:${AWS::Partition}:codepipeline:${AWS::Region}:${AWS::AccountId}:${TemplateUploadPipeline}
+          PolicyName: !Sub ${AWS::StackName}-CloudWatchEventPolicy
+
+  PipelineArtefactBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      LifecycleConfiguration:
+        Rules:
+          - Id: ExpireContents
+            Status: Enabled
+            ExpirationInDays: 1
+            NoncurrentVersionExpirationInDays: 1
+
+  PipelineArtefactBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref PipelineArtefactBucket
+      PolicyDocument:
+        Statement:
+          - Sid: HttpsOnly
+            Action: "*"
+            Effect: Deny
+            Resource: !Sub arn:aws:s3:::${PipelineArtefactBucket}/*
+            Principal: "*"
+            Condition:
+              Bool:
+                "aws:SecureTransport": "false"
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  DescriptionServiceFunctionApi:
+    Description: "API Gateway endpoint URL for Prod stage for DataAccessFunction function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/description/"
+
+  SourceDynamoDBTable:
+    Description: Name of the DynamoDB Table that data is taken from
+    Value: !Ref DynamoDBClientStore
+
+  TargetBucketName:
+    Description: "Name of Bucket where data is exported"
+    Value: !Ref TargetBucket
+
+  ArtefactBucketName:
+    Value: !Ref PipelineArtefactBucket
