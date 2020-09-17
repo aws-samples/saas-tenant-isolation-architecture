@@ -81,30 +81,6 @@ Resources:
                   - dynamodb:PutItem
                 Resource: !Sub ${DynamoDBClientStore.Arn}
 
-#  ExportTenantDataGetFunction:
-#    Type: AWS::Serverless::Function
-#    Properties:
-#      CodeUri: ExportTenantData/target/ExportTenantData.jar
-#      Handler: tenant.export.ApiGatewayHandler::handleRequest
-#      MemorySize: 2048
-#      Runtime: java11
-#      Role: !GetAtt LambdaExecutionRole.Arn
-#      Environment:
-#        Variables:
-#          ROLE: !GetAtt ExportTenantDynamoRole.Arn
-#          TEMPLATE_BUCKET: !Ref TemplateOutputBucket
-#          TEMPLATE_KEY: policies/templates.zip
-#          S3_BUCKET: !Ref TemplateOutputBucket
-#          DB_TABLE: !Ref DynamoDBClientStore
-#      Events:
-#        ApiEvent:
-#          Type: Api
-#          Properties:
-#            Path: /tenant
-#            Method: get
-#            RequestParameters:
-#              - method.request.header.Authorization
-
   ExportTenantDataPostFunction:
     Type: AWS::Serverless::Function
     Properties:
