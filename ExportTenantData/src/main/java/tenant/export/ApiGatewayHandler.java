@@ -6,10 +6,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
+import tenant.vendinglayer.TokenVendor;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
 import tenant.export.errors.GatewayError;
 
-import com.amazon.aws.partners.saasfactory.TokenVendingMachine;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -59,9 +59,9 @@ public class ApiGatewayHandler implements RequestHandler<APIGatewayProxyRequestE
         getTemplateFile(context);
 
         // we vending the token by extracting tenant ID from the JWT token contained in the request headers
-        TokenVendingMachine tokenVendingMachine = new TokenVendingMachine();
+        TokenVendor tokenVendor = new TokenVendor();
         final AwsCredentialsProvider awsCredentialsProvider =
-            tokenVendingMachine.vendTokenNoJwtValidation(input.getHeaders(), role);
+            tokenVendor.vendTokenNoJwtValidation(input.getHeaders(), role);
 
         // we parse the body of the POST request, currently we only accept a 'name' parameter to
         // be written to DynamoDB, anything else will be ignored
@@ -75,7 +75,7 @@ public class ApiGatewayHandler implements RequestHandler<APIGatewayProxyRequestE
                 "Error parsing JSON body."));
         }
 
-        String tenant = tokenVendingMachine.getTenant();
+        String tenant = tokenVendor.getTenant();
         logger.info("TENANT ID: " + tenant);
 
         // TenantInfo class encapsulates writing to DynamoDB using the enhanced DynamoDB
@@ -95,11 +95,11 @@ public class ApiGatewayHandler implements RequestHandler<APIGatewayProxyRequestE
         getTemplateFile(context);
 
         // we vending the token by extracting tenant ID from the JWT token contained in the request headers
-        TokenVendingMachine tokenVendingMachine = new TokenVendingMachine();
+        TokenVendor tokenVendor = new TokenVendor();
         final AwsCredentialsProvider awsCredentialsProvider =
-            tokenVendingMachine.vendTokenNoJwtValidation(input.getHeaders(), role);
+            tokenVendor.vendTokenNoJwtValidation(input.getHeaders(), role);
 
-        String tenant = tokenVendingMachine.getTenant();
+        String tenant = tokenVendor.getTenant();
         logger.info("TENANT ID: " + tenant);
 
         // TenantInfo class encapsulates writing to DynamoDB using the enhanced DynamoDB

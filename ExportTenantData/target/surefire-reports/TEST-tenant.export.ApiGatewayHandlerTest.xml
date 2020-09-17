@@ -1,58 +1,54 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="1" failures="0" name="tenant.export.ApiGatewayHandlerTest" time="0" errors="0" skipped="0">
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="tenant.export.ApiGatewayHandlerTest" time="0.386" tests="1" errors="0" skipped="0" failures="0">
   <properties>
-    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
-    <property name="java.vm.version" value="14.0.1+14"/>
-    <property name="sun.boot.library.path" value="/usr/local/Cellar/openjdk/14.0.1/libexec/openjdk.jdk/Contents/Home/lib"/>
-    <property name="maven.multiModuleProjectDirectory" value="/Users/svozza/git/code.amazon/HelpMeBuild/src/HelpMeBuild/HELPMEBUILD-29"/>
-    <property name="java.vm.vendor" value="Oracle Corporation"/>
-    <property name="java.vendor.url" value="https://openjdk.java.net/"/>
-    <property name="path.separator" value=":"/>
-    <property name="guice.disable.misplaced.annotation.check" value="true"/>
-    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
-    <property name="user.country" value="GB"/>
-    <property name="sun.java.launcher" value="SUN_STANDARD"/>
-    <property name="user.dir" value="/Users/svozza/git/code.amazon/HelpMeBuild/src/HelpMeBuild/HELPMEBUILD-29"/>
-    <property name="java.vm.compressedOopsMode" value="Zero based"/>
-    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="java.runtime.version" value="14.0.1+14"/>
-    <property name="os.arch" value="x86_64"/>
-    <property name="java.io.tmpdir" value="/var/folders/96/r833pwqj3qq6dpz_qq1_fc0n4v10cf/T/"/>
-    <property name="line.separator" value="
-"/>
-    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
-    <property name="os.name" value="Mac OS X"/>
-    <property name="classworlds.conf" value="/usr/local/Cellar/maven/3.6.3_1/libexec/bin/m2.conf"/>
-    <property name="sun.jnu.encoding" value="UTF-8"/>
-    <property name="java.library.path" value="/Users/svozza/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
-    <property name="maven.conf" value="/usr/local/Cellar/maven/3.6.3_1/libexec/conf"/>
-    <property name="jdk.debug" value="release"/>
-    <property name="java.class.version" value="58.0"/>
-    <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
-    <property name="os.version" value="10.14.6"/>
-    <property name="library.jansi.path" value="/usr/local/Cellar/maven/3.6.3_1/libexec/lib/jansi-native"/>
-    <property name="user.home" value="/Users/svozza"/>
-    <property name="user.timezone" value="Europe/London"/>
-    <property name="file.encoding" value="UTF-8"/>
     <property name="java.specification.version" value="14"/>
-    <property name="user.name" value="svozza"/>
-    <property name="java.class.path" value="/usr/local/Cellar/maven/3.6.3_1/libexec/boot/plexus-classworlds-2.6.0.jar"/>
-    <property name="java.vm.specification.version" value="14"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/Users/svozza/git/github.com/aws-samples/saas-tenant-isolation-architecture/ExportTenantData/target/test-classes:/Users/svozza/git/github.com/aws-samples/saas-tenant-isolation-architecture/ExportTenantData/target/classes:/Users/svozza/git/github.com/aws-samples/saas-tenant-isolation-architecture/TokenVendingLayer/target/TokenVendingLayer.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/regions/2.13.31/regions-2.13.31.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/auth/2.13.31/auth-2.13.31.jar:/Users/svozza/.m2/repository/software/amazon/eventstream/eventstream/1.0.1/eventstream-1.0.1.jar:/Users/svozza/.m2/repository/com/amazon/aws/partners/saasfactory/policy-engine/1.0.0/policy-engine-1.0.0.jar:/Users/svozza/.m2/repository/com/amazon/aws/partners/saasfactory/permission-templates/1.0.0/permission-templates-1.0.0.jar:/Users/svozza/.m2/repository/com/samskivert/jmustache/1.15/jmustache-1.15.jar:/Users/svozza/.m2/repository/io/jsonwebtoken/jjwt/0.9.1/jjwt-0.9.1.jar:/Users/svozza/.m2/repository/com/auth0/java-jwt/3.10.3/java-jwt-3.10.3.jar:/Users/svozza/.m2/repository/commons-codec/commons-codec/1.14/commons-codec-1.14.jar:/Users/svozza/.m2/repository/com/auth0/jwks-rsa/0.4.0/jwks-rsa-0.4.0.jar:/Users/svozza/.m2/repository/commons-io/commons-io/2.4/commons-io-2.4.jar:/Users/svozza/.m2/repository/com/google/guava/guava/19.0/guava-19.0.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/cognitoidentityprovider/2.13.31/cognitoidentityprovider-2.13.31.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/cognitoidentity/2.13.31/cognitoidentity-2.13.31.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/sts/2.13.31/sts-2.13.31.jar:/Users/svozza/.m2/repository/org/slf4j/slf4j-api/1.7.30/slf4j-api-1.7.30.jar:/Users/svozza/.m2/repository/com/amazonaws/aws-lambda-java-core/1.2.0/aws-lambda-java-core-1.2.0.jar:/Users/svozza/.m2/repository/com/amazonaws/aws-lambda-java-events/3.1.0/aws-lambda-java-events-3.1.0.jar:/Users/svozza/.m2/repository/joda-time/joda-time/2.6/joda-time-2.6.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/sdk-core/2.13.31/sdk-core-2.13.31.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/annotations/2.13.31/annotations-2.13.31.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/http-client-spi/2.13.31/http-client-spi-2.13.31.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/utils/2.13.31/utils-2.13.31.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/profiles/2.13.31/profiles-2.13.31.jar:/Users/svozza/.m2/repository/org/reactivestreams/reactive-streams/1.0.2/reactive-streams-1.0.2.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/url-connection-client/2.13.31/url-connection-client-2.13.31.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/dynamodb-enhanced/2.13.31/dynamodb-enhanced-2.13.31.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/aws-core/2.13.31/aws-core-2.13.31.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/dynamodb/2.13.31/dynamodb-2.13.31.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/aws-json-protocol/2.13.31/aws-json-protocol-2.13.31.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/s3/2.13.31/s3-2.13.31.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/aws-xml-protocol/2.13.31/aws-xml-protocol-2.13.31.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/aws-query-protocol/2.13.31/aws-query-protocol-2.13.31.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/protocol-core/2.13.31/protocol-core-2.13.31.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/arns/2.13.31/arns-2.13.31.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/apache-client/2.13.31/apache-client-2.13.31.jar:/Users/svozza/.m2/repository/org/apache/httpcomponents/httpclient/4.5.9/httpclient-4.5.9.jar:/Users/svozza/.m2/repository/commons-logging/commons-logging/1.2/commons-logging-1.2.jar:/Users/svozza/.m2/repository/org/apache/httpcomponents/httpcore/4.4.11/httpcore-4.4.11.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/netty-nio-client/2.13.31/netty-nio-client-2.13.31.jar:/Users/svozza/.m2/repository/io/netty/netty-codec-http/4.1.46.Final/netty-codec-http-4.1.46.Final.jar:/Users/svozza/.m2/repository/io/netty/netty-codec-http2/4.1.46.Final/netty-codec-http2-4.1.46.Final.jar:/Users/svozza/.m2/repository/io/netty/netty-codec/4.1.46.Final/netty-codec-4.1.46.Final.jar:/Users/svozza/.m2/repository/io/netty/netty-transport/4.1.46.Final/netty-transport-4.1.46.Final.jar:/Users/svozza/.m2/repository/io/netty/netty-resolver/4.1.46.Final/netty-resolver-4.1.46.Final.jar:/Users/svozza/.m2/repository/io/netty/netty-common/4.1.46.Final/netty-common-4.1.46.Final.jar:/Users/svozza/.m2/repository/io/netty/netty-buffer/4.1.46.Final/netty-buffer-4.1.46.Final.jar:/Users/svozza/.m2/repository/io/netty/netty-handler/4.1.46.Final/netty-handler-4.1.46.Final.jar:/Users/svozza/.m2/repository/io/netty/netty-transport-native-epoll/4.1.46.Final/netty-transport-native-epoll-4.1.46.Final-linux-x86_64.jar:/Users/svozza/.m2/repository/io/netty/netty-transport-native-unix-common/4.1.46.Final/netty-transport-native-unix-common-4.1.46.Final.jar:/Users/svozza/.m2/repository/com/typesafe/netty/netty-reactive-streams-http/2.0.4/netty-reactive-streams-http-2.0.4.jar:/Users/svozza/.m2/repository/com/typesafe/netty/netty-reactive-streams/2.0.4/netty-reactive-streams-2.0.4.jar:/Users/svozza/.m2/repository/io/symphonia/lambda-logging/1.0.3/lambda-logging-1.0.3.jar:/Users/svozza/.m2/repository/org/slf4j/log4j-over-slf4j/1.7.25/log4j-over-slf4j-1.7.25.jar:/Users/svozza/.m2/repository/ch/qos/logback/logback-classic/1.2.3/logback-classic-1.2.3.jar:/Users/svozza/.m2/repository/ch/qos/logback/logback-core/1.2.3/logback-core-1.2.3.jar:/Users/svozza/.m2/repository/net/lingala/zip4j/zip4j/2.6.2/zip4j-2.6.2.jar:/Users/svozza/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.10.0/jackson-core-2.10.0.jar:/Users/svozza/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.10.0/jackson-databind-2.10.0.jar:/Users/svozza/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.10.0/jackson-annotations-2.10.0.jar:/Users/svozza/.m2/repository/junit/junit/4.12/junit-4.12.jar:/Users/svozza/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
     <property name="sun.arch.data.model" value="64"/>
-    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher clean install"/>
-    <property name="java.home" value="/usr/local/Cellar/openjdk/14.0.1/libexec/openjdk.jdk/Contents/Home"/>
+    <property name="java.vendor.url" value="https://openjdk.java.net/"/>
+    <property name="os.name" value="Mac OS X"/>
+    <property name="java.vm.specification.version" value="14"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="GB"/>
+    <property name="sun.boot.library.path" value="/usr/local/Cellar/openjdk/14.0.1/libexec/openjdk.jdk/Contents/Home/lib"/>
+    <property name="sun.java.command" value="/Users/svozza/git/github.com/aws-samples/saas-tenant-isolation-architecture/ExportTenantData/target/surefire/surefirebooter1005643107819354716.jar /Users/svozza/git/github.com/aws-samples/saas-tenant-isolation-architecture/ExportTenantData/target/surefire 2020-09-17T20-00-24_248-jvmRun1 surefire5183701563913856661tmp surefire_12264613066149529300tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="/Users/svozza/git/github.com/aws-samples/saas-tenant-isolation-architecture/ExportTenantData/target/test-classes:/Users/svozza/git/github.com/aws-samples/saas-tenant-isolation-architecture/ExportTenantData/target/classes:/Users/svozza/git/github.com/aws-samples/saas-tenant-isolation-architecture/TokenVendingLayer/target/TokenVendingLayer.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/regions/2.13.31/regions-2.13.31.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/auth/2.13.31/auth-2.13.31.jar:/Users/svozza/.m2/repository/software/amazon/eventstream/eventstream/1.0.1/eventstream-1.0.1.jar:/Users/svozza/.m2/repository/com/amazon/aws/partners/saasfactory/policy-engine/1.0.0/policy-engine-1.0.0.jar:/Users/svozza/.m2/repository/com/amazon/aws/partners/saasfactory/permission-templates/1.0.0/permission-templates-1.0.0.jar:/Users/svozza/.m2/repository/com/samskivert/jmustache/1.15/jmustache-1.15.jar:/Users/svozza/.m2/repository/io/jsonwebtoken/jjwt/0.9.1/jjwt-0.9.1.jar:/Users/svozza/.m2/repository/com/auth0/java-jwt/3.10.3/java-jwt-3.10.3.jar:/Users/svozza/.m2/repository/commons-codec/commons-codec/1.14/commons-codec-1.14.jar:/Users/svozza/.m2/repository/com/auth0/jwks-rsa/0.4.0/jwks-rsa-0.4.0.jar:/Users/svozza/.m2/repository/commons-io/commons-io/2.4/commons-io-2.4.jar:/Users/svozza/.m2/repository/com/google/guava/guava/19.0/guava-19.0.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/cognitoidentityprovider/2.13.31/cognitoidentityprovider-2.13.31.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/cognitoidentity/2.13.31/cognitoidentity-2.13.31.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/sts/2.13.31/sts-2.13.31.jar:/Users/svozza/.m2/repository/org/slf4j/slf4j-api/1.7.30/slf4j-api-1.7.30.jar:/Users/svozza/.m2/repository/com/amazonaws/aws-lambda-java-core/1.2.0/aws-lambda-java-core-1.2.0.jar:/Users/svozza/.m2/repository/com/amazonaws/aws-lambda-java-events/3.1.0/aws-lambda-java-events-3.1.0.jar:/Users/svozza/.m2/repository/joda-time/joda-time/2.6/joda-time-2.6.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/sdk-core/2.13.31/sdk-core-2.13.31.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/annotations/2.13.31/annotations-2.13.31.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/http-client-spi/2.13.31/http-client-spi-2.13.31.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/utils/2.13.31/utils-2.13.31.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/profiles/2.13.31/profiles-2.13.31.jar:/Users/svozza/.m2/repository/org/reactivestreams/reactive-streams/1.0.2/reactive-streams-1.0.2.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/url-connection-client/2.13.31/url-connection-client-2.13.31.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/dynamodb-enhanced/2.13.31/dynamodb-enhanced-2.13.31.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/aws-core/2.13.31/aws-core-2.13.31.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/dynamodb/2.13.31/dynamodb-2.13.31.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/aws-json-protocol/2.13.31/aws-json-protocol-2.13.31.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/s3/2.13.31/s3-2.13.31.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/aws-xml-protocol/2.13.31/aws-xml-protocol-2.13.31.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/aws-query-protocol/2.13.31/aws-query-protocol-2.13.31.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/protocol-core/2.13.31/protocol-core-2.13.31.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/arns/2.13.31/arns-2.13.31.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/apache-client/2.13.31/apache-client-2.13.31.jar:/Users/svozza/.m2/repository/org/apache/httpcomponents/httpclient/4.5.9/httpclient-4.5.9.jar:/Users/svozza/.m2/repository/commons-logging/commons-logging/1.2/commons-logging-1.2.jar:/Users/svozza/.m2/repository/org/apache/httpcomponents/httpcore/4.4.11/httpcore-4.4.11.jar:/Users/svozza/.m2/repository/software/amazon/awssdk/netty-nio-client/2.13.31/netty-nio-client-2.13.31.jar:/Users/svozza/.m2/repository/io/netty/netty-codec-http/4.1.46.Final/netty-codec-http-4.1.46.Final.jar:/Users/svozza/.m2/repository/io/netty/netty-codec-http2/4.1.46.Final/netty-codec-http2-4.1.46.Final.jar:/Users/svozza/.m2/repository/io/netty/netty-codec/4.1.46.Final/netty-codec-4.1.46.Final.jar:/Users/svozza/.m2/repository/io/netty/netty-transport/4.1.46.Final/netty-transport-4.1.46.Final.jar:/Users/svozza/.m2/repository/io/netty/netty-resolver/4.1.46.Final/netty-resolver-4.1.46.Final.jar:/Users/svozza/.m2/repository/io/netty/netty-common/4.1.46.Final/netty-common-4.1.46.Final.jar:/Users/svozza/.m2/repository/io/netty/netty-buffer/4.1.46.Final/netty-buffer-4.1.46.Final.jar:/Users/svozza/.m2/repository/io/netty/netty-handler/4.1.46.Final/netty-handler-4.1.46.Final.jar:/Users/svozza/.m2/repository/io/netty/netty-transport-native-epoll/4.1.46.Final/netty-transport-native-epoll-4.1.46.Final-linux-x86_64.jar:/Users/svozza/.m2/repository/io/netty/netty-transport-native-unix-common/4.1.46.Final/netty-transport-native-unix-common-4.1.46.Final.jar:/Users/svozza/.m2/repository/com/typesafe/netty/netty-reactive-streams-http/2.0.4/netty-reactive-streams-http-2.0.4.jar:/Users/svozza/.m2/repository/com/typesafe/netty/netty-reactive-streams/2.0.4/netty-reactive-streams-2.0.4.jar:/Users/svozza/.m2/repository/io/symphonia/lambda-logging/1.0.3/lambda-logging-1.0.3.jar:/Users/svozza/.m2/repository/org/slf4j/log4j-over-slf4j/1.7.25/log4j-over-slf4j-1.7.25.jar:/Users/svozza/.m2/repository/ch/qos/logback/logback-classic/1.2.3/logback-classic-1.2.3.jar:/Users/svozza/.m2/repository/ch/qos/logback/logback-core/1.2.3/logback-core-1.2.3.jar:/Users/svozza/.m2/repository/net/lingala/zip4j/zip4j/2.6.2/zip4j-2.6.2.jar:/Users/svozza/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.10.0/jackson-core-2.10.0.jar:/Users/svozza/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.10.0/jackson-databind-2.10.0.jar:/Users/svozza/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.10.0/jackson-annotations-2.10.0.jar:/Users/svozza/.m2/repository/junit/junit/4.12/junit-4.12.jar:/Users/svozza/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/Users/svozza"/>
     <property name="user.language" value="en"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
-    <property name="java.vm.info" value="mixed mode, sharing"/>
-    <property name="java.version" value="14.0.1"/>
-    <property name="java.vendor" value="N/A"/>
-    <property name="maven.home" value="/usr/local/Cellar/maven/3.6.3_1/libexec"/>
-    <property name="file.separator" value="/"/>
     <property name="java.version.date" value="2020-04-14"/>
+    <property name="java.home" value="/usr/local/Cellar/openjdk/14.0.1/libexec/openjdk.jdk/Contents/Home"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/Users/svozza/git/github.com/aws-samples/saas-tenant-isolation-architecture/ExportTenantData"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="surefire.real.class.path" value="/Users/svozza/git/github.com/aws-samples/saas-tenant-isolation-architecture/ExportTenantData/target/surefire/surefirebooter1005643107819354716.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="14.0.1+14"/>
+    <property name="user.name" value="svozza"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="10.14.6"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="localRepository" value="/Users/svozza/.m2/repository"/>
     <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
-    <property name="sun.cpu.endian" value="little"/>
+    <property name="java.io.tmpdir" value="/var/folders/96/r833pwqj3qq6dpz_qq1_fc0n4v10cf/T/"/>
+    <property name="java.version" value="14.0.1"/>
+    <property name="user.dir" value="/Users/svozza/git/github.com/aws-samples/saas-tenant-isolation-architecture/ExportTenantData"/>
+    <property name="os.arch" value="x86_64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="java.library.path" value="/Users/svozza/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="java.vendor" value="N/A"/>
+    <property name="java.vm.version" value="14.0.1+14"/>
     <property name="sun.io.unicode.encoding" value="UnicodeBig"/>
+    <property name="java.class.version" value="58.0"/>
   </properties>
-  <testcase classname="tenant.export.ApiGatewayHandlerTest" name="successfulResponse" time="0"/>
+  <testcase name="successfulResponse" classname="tenant.export.ApiGatewayHandlerTest" time="0"/>
 </testsuite>

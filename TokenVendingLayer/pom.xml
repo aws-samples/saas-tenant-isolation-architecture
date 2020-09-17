@@ -9,7 +9,39 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <groupId>token-vending-layer</groupId>
     <artifactId>TokenVendingLayer</artifactId>
 
+    <properties>
+        <software.amazon.awssdk.version>2.13.31</software.amazon.awssdk.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>regions</artifactId>
+            <version>${software.amazon.awssdk.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>auth</artifactId>
+            <version>${software.amazon.awssdk.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.amazon.aws.partners.saasfactory</groupId>
+            <artifactId>policy-engine</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.30</version>
+        </dependency>
+    </dependencies>
 
 </project>

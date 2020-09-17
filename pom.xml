@@ -36,6 +36,7 @@
     <modules>
         <module>AssumeRoleWatchdog</module>
         <module>ExportTenantData</module>
+        <module>TokenVendingLayer</module>
     </modules>
 
     <build>

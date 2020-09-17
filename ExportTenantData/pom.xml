@@ -19,8 +19,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.amazon.aws.partners.saasfactory</groupId>
-            <artifactId>token-vending-layer</artifactId>
+            <groupId>token-vending-layer</groupId>
+            <artifactId>TokenVendingLayer</artifactId>
             <version>1.0.0</version>
         </dependency>
         <dependency>
@@ -32,6 +32,11 @@
           <groupId>com.amazonaws</groupId>
           <artifactId>aws-lambda-java-events</artifactId>
           <version>3.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>sdk-core</artifactId>
+            <version>${software.amazon.awssdk.version}</version>
         </dependency>
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
