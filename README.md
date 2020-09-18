@@ -51,10 +51,10 @@ export TEMPLATE_OBJECT_KEY=<template zip file>
 # aws s3 mb s3://$DEPLOYMENT_S3_BUCKET
 
 # Build the source
-make build-java
+make build
 
 # Deploy
-make upload-lambda-layer deploy
+make deploy
 ```
 
 The first command will build the source of your application.

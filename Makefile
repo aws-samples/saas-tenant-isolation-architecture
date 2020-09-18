@@ -13,7 +13,7 @@ packaged.yaml: template.yaml
 		--template-file template.yaml \
 		--output-template-file packaged.yaml
 
-deploy: packaged.yaml templates.zip
+deploy: packaged.yaml templates.zip upload-lambda-layer
 	aws cloudformation deploy \
 		--stack-name $(STACK_NAME) \
 		--template-file packaged.yaml \
@@ -30,13 +30,13 @@ templates.zip: templates/*
 	zip -j templates.zip templates/readme.md
 	aws s3 cp templates.zip s3://$(TEMPLATE_BUCKET_NAME)/$(TEMPLATE_OBJECT_KEY)
 
-build-java:
+build:
 	mvn clean install
 
 build-layer:
 	cd TokenVendingLayer && mvn clean install
 
-upload-lambda-layer: build-layer
+upload-lambda-layer:
 	aws s3 cp TokenVendingLayer/target/$(LAYER_JAR)  s3://$(DEPLOYMENT_S3_BUCKET)/$(LAYER_JAR)
 
 clean: 
