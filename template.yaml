@@ -28,7 +28,7 @@ Resources:
       Description: Token Vendor Layer
       Content:
         S3Bucket: !Ref DeploymentS3Bucket
-        S3Key: token-vending-layer.jar
+        S3Key: TokenVendingLayer.jar
       CompatibleRuntimes:
         - java11
 
