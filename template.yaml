@@ -28,7 +28,7 @@ Resources:
       Description: Token Vendor Layer
       Content:
         S3Bucket: !Ref DeploymentS3Bucket
-        S3Key: token-vending-layer.jar
+        S3Key: TokenVendingLayer.jar
       CompatibleRuntimes:
         - java11
 
@@ -81,10 +81,10 @@ Resources:
                   - dynamodb:PutItem
                 Resource: !Sub ${DynamoDBClientStore.Arn}
 
-  ExportTenantDataGetFunction:
+  ExportTenantDataFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ExportTenantData/target/ExportTenantData-1.0.jar
+      CodeUri: ExportTenantData/target/ExportTenantData.jar
       Handler: tenant.export.ApiGatewayHandler::handleRequest
       MemorySize: 2048
       Runtime: java11
@@ -101,31 +101,7 @@ Resources:
           Type: Api
           Properties:
             Path: /tenant
-            Method: get
-            RequestParameters:
-              - method.request.header.Authorization
-
-  ExportTenantDataPostFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      CodeUri: ExportTenantData/target/ExportTenantData-1.0.jar
-      Handler: tenant.export.ApiGatewayHandler::handleRequest
-      MemorySize: 2048
-      Runtime: java11
-      Role: !GetAtt LambdaExecutionRole.Arn
-      Environment:
-        Variables:
-          ROLE: !GetAtt ExportTenantDynamoRole.Arn
-          TEMPLATE_BUCKET: !Ref TemplateOutputBucket
-          TEMPLATE_KEY: policies/templates.zip
-          S3_BUCKET: !Ref TemplateOutputBucket
-          DB_TABLE: !Ref DynamoDBClientStore
-      Events:
-        ApiEvent:
-          Type: Api
-          Properties:
-            Path: /tenant
-            Method: post
+            Method: any
             RequestParameters:
               - method.request.header.Authorization
 
@@ -135,7 +111,7 @@ Resources:
   AssumeRoleWatchdogFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: AssumeRoleWatchDog/target/AssumeRoleWatchdog-1.0.jar
+      CodeUri: AssumeRoleWatchDog/target/AssumeRoleWatchdog.jar
       Handler: tenant.watchdog.WatchdogHandler::handleRequest
       Runtime: java11
       MemorySize: 2048

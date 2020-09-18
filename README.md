@@ -20,8 +20,6 @@ The IAM policy templates contained in `templates/` are zipped and uploaded to an
 
 ## Deploy the sample application
 
-This project uses AWS SAM.
-
 - Install prerequisites
 - Clone repository
 - Fill env vars
@@ -29,44 +27,33 @@ This project uses AWS SAM.
 
 The application uses several AWS resources, including Lambda functions and an API Gateway API. These resources are defined in the `template.yaml` file in this project.
 
-The Serverless Application Model Command Line Interface (SAM CLI) is an extension of the AWS CLI that adds functionality for building and testing Lambda applications. It uses Docker to run your functions in an Amazon Linux environment that matches Lambda.
-To use the SAM CLI, you need the following tools.
-
 - AWS CLI - [Install the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) and [configure it with your AWS credentials].
-- SAM CLI - [Install the SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
 - Java8 - [Install the Java SE Development Kit 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
-- Docker - [Install Docker community edition](https://hub.docker.com/search/?type=edition&offering=community)
 
 To build and deploy your application for the first time, run the following in your shell:
 
 ```bash
-STACK_NAME=<Define the stack name>
+export STACK_NAME=<Define the stack name>
 
 # Packaged templates are uploaded to an S3 bucket.
-BUCKET_NAME="$STACK_NAME"-packaging-bucket
+export DEPLOYMENT_S3_BUCKET="$STACK_NAME"-packaging-bucket
+
+# The S3 Bucket containing the zipped policy templates to be used
+export TEMPLATE_BUCKET_NAME=<tempalte s3 bucket>
+export TEMPLATE_OBJECT_KEY=<template zip file>
 
 # Create the bucket if it doesn't exist
-# aws s3 mb s3://$BUCKET_NAME
+# aws s3 mb s3://$DEPLOYMENT_S3_BUCKET
 
 # Build the source
-sam build --use-container
-
-# Package
-aws cloudformation package \
-		--template-file .aws-sam/build/template.yaml \
-		--s3-bucket $(BUCKET_NAME) \
-		--output-template-file packaged.yaml
+make build
 
 # Deploy
-aws cloudformation deploy \
-		--template-file packaged.yaml \
-		--stack-name $(STACK_NAME) \
-		--capabilities CAPABILITY_IAM
+make deploy
 ```
 
 The first command will build the source of your application.
-The second command will package the application.
-The third command will deploy your application to AWS.
+The second command will package the application and deploy your application to AWS.
 
 You can find the Description Service API Gateway Endpoint URL in the output values displayed after deployment.
 
@@ -74,12 +61,6 @@ You can find the Description Service API Gateway Endpoint URL in the output valu
 
 TODO
 
-## Use the SAM CLI to build and test locally
-
-Build your application with the `sam build --use-container` command.
-
-```bash
-test$ sam build --use-container
 ```
 
 ## Cleanup

@@ -1,20 +1,19 @@
-STACK_NAME="hmb29"
+STACK_NAME?="hmb29"
 
-TEMPLATE_BUCKET_NAME="svozza-local-cfn"
-TEMPLATE_OBJECT_KEY="example-templates.zip"
+DEPLOYMENT_S3_BUCKET?="svozza-local-cfn"
+TEMPLATE_BUCKET_NAME?="svozza-local-cfn"
+TEMPLATE_OBJECT_KEY?="example-templates.zip"
 
-BUCKET="svozza-local-cfn"
-
-ARTEFACT_BUCKET=""
+LAYER_JAR="TokenVendingLayer.jar"
 
 packaged.yaml: template.yaml
 	aws cloudformation package \
-		--s3-bucket $(BUCKET) \
+		--s3-bucket $(DEPLOYMENT_S3_BUCKET) \
 		--s3-prefix $(STACK_NAME) \
 		--template-file template.yaml \
 		--output-template-file packaged.yaml
 
-deploy: packaged.yaml templates.zip
+deploy: packaged.yaml templates.zip upload-lambda-layer
 	aws cloudformation deploy \
 		--stack-name $(STACK_NAME) \
 		--template-file packaged.yaml \
@@ -22,7 +21,7 @@ deploy: packaged.yaml templates.zip
 		--parameter-overrides \
 			TemplateBucketName=$(TEMPLATE_BUCKET_NAME) \
 			TemplateObjectKey=$(TEMPLATE_OBJECT_KEY) \
-			DeploymentS3Bucket=$(BUCKET)
+			DeploymentS3Bucket=$(DEPLOYMENT_S3_BUCKET)
 
 
 templates.zip: templates/*
@@ -31,8 +30,14 @@ templates.zip: templates/*
 	zip -j templates.zip templates/readme.md
 	aws s3 cp templates.zip s3://$(TEMPLATE_BUCKET_NAME)/$(TEMPLATE_OBJECT_KEY)
 
-build-java:
+build:
 	mvn clean install
+
+build-layer:
+	cd TokenVendingLayer && mvn clean install
+
+upload-lambda-layer:
+	aws s3 cp TokenVendingLayer/target/$(LAYER_JAR)  s3://$(DEPLOYMENT_S3_BUCKET)/$(LAYER_JAR)
 
 clean: 
 	# Delete bootstrapped templates.zip
