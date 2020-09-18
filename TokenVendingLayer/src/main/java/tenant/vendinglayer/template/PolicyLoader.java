@@ -11,7 +11,7 @@ public class PolicyLoader {
     private static Stream<File> streamFiles(File file) {
         return file.isDirectory() ?
             Arrays.stream(Objects.requireNonNull(file.listFiles()))
-                .flatMap(PolicyLoader::streamFiles) : Arrays.stream(new File[]{file});
+                .flatMap(PolicyLoader::streamFiles) : Stream.of(file);
     }
 
     private static String stringifyFile(File file) {
