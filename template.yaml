@@ -81,7 +81,7 @@ Resources:
                   - dynamodb:PutItem
                 Resource: !Sub ${DynamoDBClientStore.Arn}
 
-  ExportTenantDataPostFunction:
+  ExportTenantDataFunction:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: ExportTenantData/target/ExportTenantData.jar
