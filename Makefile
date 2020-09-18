@@ -2,7 +2,7 @@ STACK_NAME?="hmb29"
 
 DEPLOYMENT_S3_BUCKET?="svozza-local-cfn"
 TEMPLATE_BUCKET_NAME?="svozza-local-cfn"
-TEMPLATE_OBJECT_KEY=?"example-templates.zip"
+TEMPLATE_OBJECT_KEY?="example-templates.zip"
 
 LAYER_JAR="TokenVendingLayer.jar"
 
@@ -37,7 +37,7 @@ build-layer:
 	cd TokenVendingLayer && mvn clean install
 
 upload-lambda-layer: build-layer
-	aws s3 cp TokenVendingLayer/target/$(LAYER_JAR)  s3://$(BUCKET)/$(LAYER_JAR)
+	aws s3 cp TokenVendingLayer/target/$(LAYER_JAR)  s3://$(DEPLOYMENT_S3_BUCKET)/$(LAYER_JAR)
 
 clean: 
 	# Delete bootstrapped templates.zip
