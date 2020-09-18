@@ -35,7 +35,7 @@ Resources:
   LambdaExecutionRole:
     Type: AWS::IAM::Role
     Properties:
-      Path: '/'
+      Path: "/"
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
         - arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess
@@ -51,7 +51,7 @@ Resources:
       Policies:
         - PolicyName: ExportTenantDataFunctionS3Policy
           PolicyDocument:
-            Version: '2012-10-17'
+            Version: "2012-10-17"
             Statement:
               - Sid: TemplateBucketPolicy
                 Effect: Allow
@@ -62,7 +62,7 @@ Resources:
   ExportTenantDynamoRole:
     Type: AWS::IAM::Role
     Properties:
-      Path: '/'
+      Path: "/"
       AssumeRolePolicyDocument:
         Statement:
           - Effect: Allow
@@ -72,7 +72,7 @@ Resources:
       Policies:
         - PolicyName: ExportTenantDataFunctionDdbPolicy
           PolicyDocument:
-            Version: '2012-10-17'
+            Version: "2012-10-17"
             Statement:
               - Sid: TemplateDynamoDbPolicy
                 Effect: Allow
@@ -144,7 +144,7 @@ Resources:
           SNS_TOPIC: !Ref WatchdogSnsTopic
       Policies:
         - AWSLambdaExecute
-        - Version: '2012-10-17'
+        - Version: "2012-10-17"
           Statement:
             - Effect: Allow
               Action:
@@ -422,7 +422,7 @@ Outputs:
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
   DescriptionServiceFunctionApi:
     Description: "API Gateway endpoint URL for Prod stage for DataAccessFunction function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/description/"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/tenant"
 
   SourceDynamoDBTable:
     Description: Name of the DynamoDB Table that data is taken from
