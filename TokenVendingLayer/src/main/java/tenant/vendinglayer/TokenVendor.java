@@ -68,6 +68,7 @@ public class TokenVendor {
             try {
                 ZipFile zipFile = new ZipFile(templateFilePath.toFile());
                 zipFile.extractAll(templateDirPath);
+                logger.info("Templates zip file successfully unzipped.");
             } catch (IOException e) {
                 logger.error("Could not unzip template file.", e);
                 throw new RuntimeException(e.getMessage());

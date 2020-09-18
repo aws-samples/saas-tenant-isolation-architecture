@@ -1,17 +1,14 @@
-STACK_NAME="hmb29"
+STACK_NAME?="hmb29"
 
-TEMPLATE_BUCKET_NAME="svozza-local-cfn"
-TEMPLATE_OBJECT_KEY="example-templates.zip"
-
-BUCKET="svozza-local-cfn"
+DEPLOYMENT_S3_BUCKET?="svozza-local-cfn"
+TEMPLATE_BUCKET_NAME?="svozza-local-cfn"
+TEMPLATE_OBJECT_KEY=?"example-templates.zip"
 
 LAYER_JAR="TokenVendingLayer.jar"
 
-ARTEFACT_BUCKET=""
-
 packaged.yaml: template.yaml
 	aws cloudformation package \
-		--s3-bucket $(BUCKET) \
+		--s3-bucket $(DEPLOYMENT_S3_BUCKET) \
 		--s3-prefix $(STACK_NAME) \
 		--template-file template.yaml \
 		--output-template-file packaged.yaml
@@ -24,7 +21,7 @@ deploy: packaged.yaml templates.zip
 		--parameter-overrides \
 			TemplateBucketName=$(TEMPLATE_BUCKET_NAME) \
 			TemplateObjectKey=$(TEMPLATE_OBJECT_KEY) \
-			DeploymentS3Bucket=$(BUCKET)
+			DeploymentS3Bucket=$(DEPLOYMENT_S3_BUCKET)
 
 
 templates.zip: templates/*
