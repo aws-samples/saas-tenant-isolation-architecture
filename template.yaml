@@ -187,6 +187,7 @@ Resources:
                 Version: "1"
               Configuration:
                 ProjectName: !Ref TemplateCodeBuildProject
+                EnvironmentVariables: !Sub '[{"name":"BUCKET_NAME","value":"${TemplateOutputBucket}","type":"PLAINTEXT"},{"name":"LAMBDA_ID","value":"${ExportTenantDataFunction}","type":"PLAINTEXT"}]'
               InputArtifacts:
                 - Name: src
               OutputArtifacts:
