@@ -44,7 +44,7 @@ public class ApiGatewayHandler implements RequestHandler<APIGatewayProxyRequestE
         // the request headers
         TokenVendor tokenVendor = new TokenVendor();
         final AwsCredentialsProvider awsCredentialsProvider =
-            tokenVendor.vendTokenNoJwtValidation(input.getHeaders());
+            tokenVendor.vendTokenJwt(input.getHeaders());
 
         // we parse the body of the POST request, currently we only accept a 'name' parameter to
         // be written to DynamoDB, anything else will be ignored
@@ -79,7 +79,7 @@ public class ApiGatewayHandler implements RequestHandler<APIGatewayProxyRequestE
         // the request headers
         TokenVendor tokenVendor = new TokenVendor();
         final AwsCredentialsProvider awsCredentialsProvider =
-            tokenVendor.vendTokenNoJwtValidation(input.getHeaders());
+            tokenVendor.vendTokenJwt(input.getHeaders());
 
         String tenant = tokenVendor.getTenant();
         logger.info("TENANT ID: " + tenant);

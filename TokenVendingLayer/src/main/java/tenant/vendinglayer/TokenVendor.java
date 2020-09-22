@@ -26,7 +26,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.amazon.aws.partners.saasfactory.token.JwtTokenVendor;
+import tenant.vendinglayer.token.JwtTokenVendor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.lingala.zip4j.ZipFile;
@@ -85,7 +85,7 @@ public class TokenVendor {
      * @param headers the HTTP headers which contain an authorization header.
      * @return the scoped credentials
      */
-    public AwsCredentialsProvider vendTokenNoJwtValidation(Map<String, String> headers) {
+    public AwsCredentialsProvider vendTokenJwt(Map<String, String> headers) {
         Map<String, String> policyData = new HashMap<>();
         policyData.put("table", DB_TABLE);
 
@@ -97,7 +97,6 @@ public class TokenVendor {
             .headers(headers)
             .role(ROLE)
             .region(AWS_REGION)
-            .validateToken(false)
             .build();
 
         AwsCredentialsProvider awsCredentialsProvider = jwtTokenVendor.vendToken();
