@@ -193,21 +193,7 @@ Resources:
               OutputArtifacts:
                 - Name: buildoutput
               RunOrder: 1
-        - Name: Deploy
-          Actions:
-            - Name: Deploy
-              ActionTypeId:
-                Category: Deploy
-                Owner: AWS
-                Provider: S3
-                Version: "1"
-              Configuration:
-                BucketName: !Ref TemplateOutputBucket
-                Extract: true
-                ObjectKey: policies
-              InputArtifacts:
-                - Name: buildoutput
-              RunOrder: 1
+        
 
   TemplateUploadPipelineRole:
     Type: AWS::IAM::Role
@@ -301,13 +287,15 @@ Resources:
                 Effect: Allow
                 Action: s3:ListBucket
 
-              - Resource: !Sub arn:aws:s3:::${TemplateOutputBucket}
+              - Resource: !Sub arn:aws:s3:::${TemplateOutputBucket}/templates/*
                 Effect: Allow
                 Action: s3:PutObject
 
-              # - Resource: !Sub arn:aws:sts::${AWS::AccountId}:assumed-role/*/*
-              #   Effect: Allow
-              #   Action: sts:GetServiceBearerToken
+              - Resource: !GetAtt ExportTenantDataFunction.Arn
+                Effect: Allow
+                Action: 
+                  - lambda:UpdateFunctionConfiguration
+                  - lambda:GetFunctionConfiguration
 
   TemplateOutputBucket:
     Type: AWS::S3::Bucket
