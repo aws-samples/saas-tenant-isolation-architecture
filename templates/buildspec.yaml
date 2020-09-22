@@ -1,61 +1,34 @@
 version: 0.2
 
-# env:
-#   variables:
-#     JAVA_HOME: "/usr/lib/jvm/java-8-openjdk-amd64"
-#   parameter-store:
-#     LOGIN_PASSWORD: /CodeBuild/dockerLoginPassword
-
 phases:
-  # install:
-  #   commands:
-  #     - echo Entered the install phase...
-  #     - apt-get update -y
-  #     - apt-get install -y maven
-  #   finally:
-  #     - echo This always runs even if the update or install command fails
-  # pre_build:
-  #   commands:
-  #     - echo Entered the pre_build phase...
-  #     - docker login –u User –p $LOGIN_PASSWORD
-  #   finally:
-  #     - echo This always runs even if the login command fails
+  install:
+    commands:
+      - yum install -y jq
   build:
     commands:
+      - printenv
       - ls ./
+      - echo "zipping files"
       - zip -j templates.zip templates/*.json
-    finally:
-      - echo This always runs even if the install command fails
-  # post_build:
-  #   commands:
-  #     - echo Entered the post_build phase...
-  #     - echo Build completed on `date`
+      - export OBJECT_KEY=templates/${CODEBUILD_RESOLVED_SOURCE_VERSION}/policies.zip && echo $OBJECT_KEY
 
-# reports:
-#   arn:aws:codebuild:your-region:your-aws-account-id:report-group/report-group-name-1:
-#     files:
-#       - "**/*"
-#     base-directory: 'target/tests/reports'
-#     discard-paths: no
-#   reportGroupCucumberJson:
-#     files:
-#       - 'cucumber/target/cucumber-tests.xml'
-#     discard-paths: yes
-#     file-format: CucumberJson # default is JunitXml
+  post_build:
+    commands:
+      - echo "Uploading file to ${BUCKET_NAME}/${OBJECT_KEY}"
+      - aws s3 cp ./templates.zip "s3://${BUCKET_NAME}/${OBJECT_KEY}"
+  
+      - echo "Updating Lambda Env var"
+
+      - config=$(aws lambda get-function-configuration --function-name ${LAMBDA_ID}) && echo $config
+      - lambda_env=$(echo $config | jq -r --arg template_key $OBJECT_KEY '.Environment.Variables.TEMPLATE_KEY = $template_key | .Environment') && echo $lambda_env
+      - aws lambda update-function-configuration --function-name ${LAMBDA_ID} --environment "${lambda_env}"
+      - echo Entered the post_build phase...
+      - echo Build completed on `date`
 
 artifacts:
   files:
     - templates.zip
   discard-paths: yes
-  # secondary-artifacts:
-  #   artifact1:
-  #     files:
-  #       - target/artifact-1.0.jar
-  #     discard-paths: yes
-  #   artifact2:
-  #     files:
-  #       - target/artifact-2.0.jar
-  #     discard-paths: yes
 
 cache:
   paths:
