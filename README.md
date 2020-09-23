@@ -59,9 +59,29 @@ You can find the Description Service API Gateway Endpoint URL in the output valu
 
 ### Testing the Application
 
-TODO
+Test that the deployment was successful by posting and retrieving data from the `/tenant` endpoint.
 
+
+Post data to the endpoint
+```bash
+URL=<ENDPOINT URL>
+AUTH=<JWT TOKEN>
+
+curl \
+    --request POST \
+    --header "Content-Type: application/json" \
+    --header "Authorization: Bearer $AUTH" \
+    --data '{"data":"test-data"}' \
+    $URL 
 ```
+
+Get data from the endpoint
+```bash
+curl \
+    --header "Authorization: Bearer $AUTH" \
+    $URL
+```
+
 
 ## Cleanup
 
