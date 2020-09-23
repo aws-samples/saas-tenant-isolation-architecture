@@ -39,7 +39,7 @@ export STACK_NAME=<Define the stack name>
 export DEPLOYMENT_S3_BUCKET="$STACK_NAME"-packaging-bucket
 
 # The S3 Bucket containing the zipped policy templates to be used
-export TEMPLATE_BUCKET_NAME=<tempalte s3 bucket>
+export TEMPLATE_BUCKET_NAME=<template s3 bucket>
 export TEMPLATE_OBJECT_KEY=<template zip file>
 
 # Create the bucket if it doesn't exist
