@@ -33,42 +33,46 @@ It inspects `AssumeRole` events of the account. If a role is assumed without an 
 
 ## Deploy the sample application
 
-- Install prerequisites
-- Clone repository
-- Fill env vars
-- Deploy
-
 The application uses several AWS resources, including Lambda functions and an API Gateway API. The `Resources` section of the file `template.yaml` defines the resources in this project.
 
-- AWS CLI - [Install the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) and [configure it with your AWS credentials].
-- Java8 - [Install the Java SE Development Kit 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+1. Prerequisites
 
-To build and deploy your application for the first time, run the following in your shell:
+    - AWS CLI - [Install the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) and [configure it with your AWS credentials].
+    - Java8 - [Install the Java SE Development Kit 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 
-```bash
-export STACK_NAME=<Define the stack name>
+2.  Clone the repository
 
-# The packaged template is uploaded to an S3 bucket.
-export DEPLOYMENT_S3_BUCKET="$STACK_NAME"-packaging-bucket
+    ```bash
+    git clone git+https://github.com/aws-samples/saas-tenant-isolation-architecture
+    ```
 
-# The S3 Bucket containing the zipped policy templates to bootstrap the CodeCommit repository
-export TEMPLATE_BUCKET_NAME=<template s3 bucket>
-export TEMPLATE_OBJECT_KEY=<template zip file>
+3. 
+    To build and deploy your application for the first time, run the following in your shell:
 
-# Create the bucket if it doesn't exist
-# aws s3 mb s3://$DEPLOYMENT_S3_BUCKET
+    ```bash
+    export STACK_NAME=<Define the stack name>
 
-# Build the source
-make build
+    # The packaged template is uploaded to an S3 bucket.
+    export DEPLOYMENT_S3_BUCKET="$STACK_NAME"-packaging-bucket
 
-# Deploy
-make deploy
-```
+    # The S3 Bucket containing the zipped policy templates to bootstrap the CodeCommit repository
+    export TEMPLATE_BUCKET_NAME=<template s3 bucket>
+    export TEMPLATE_OBJECT_KEY=<template zip file>
 
-The first command will build the source of your application.
-The second command will package the application and deploy your application to AWS.
+    # Create the bucket if it doesn't exist
+    # aws s3 mb s3://$DEPLOYMENT_S3_BUCKET
 
-You can find the API Gateway Endpoint URL in the output values displayed after deployment.
+    # Build the source
+    make build
+
+    # Deploy
+    make deploy
+    ```
+
+    The first command will build the source of your application.
+    The second command will package the application and deploy your application to AWS.
+
+    You can find the API Gateway Endpoint URL in the output values displayed after deployment.
 
 ### Testing the Application
 
