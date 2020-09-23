@@ -8,9 +8,10 @@ What's the problem this work aims to solve? Ideally IAM roles should be scoped t
 
 This project contains source code and supporting files to deploy the application. It implements two lambda functions and a DynamoDB table.
 
+### ExportTenantData Function
 The `ExportTenantData` function demonstrates a small microservice used by multiple tenants of an application. The ExportTenantData function can store and retrieve data from a multi-tenant DynamoDB table.
 
-TODO Add section explaining the Token Vending Machine, assuming role with an inline policy etc
+The `ExportTenantData` function uses the [Lambda Layer](https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html) `TokenVendingLayer` to assume a role with credentials scoped to the tenant making the request.
 
 ### Template Pipeline
 
