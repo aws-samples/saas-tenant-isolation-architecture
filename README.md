@@ -55,7 +55,7 @@ make deploy
 The first command will build the source of your application.
 The second command will package the application and deploy your application to AWS.
 
-You can find the Description Service API Gateway Endpoint URL in the output values displayed after deployment.
+You can find the API Gateway Endpoint URL in the output values displayed after deployment.
 
 ### Testing the Application
 
