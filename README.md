@@ -18,6 +18,10 @@ Templated IAM Policies are stored and versioned using AWS CodeCommit.
 An AWS CodePipeline executes on change to the repository.
 The IAM policy templates contained in `templates/` are zipped and uploaded to an S3 bucket.
 
+### Token Vending Layer
+
+This sample uses the [Dynamic Policy Generation](https://github.com/aws-samples/aws-saas-factory-dynamic-policy-generation) library. Read about [Dynamic Policy Generation and the supporting library on the AWS blog](https://aws.amazon.com/blogs/apn/isolating-saas-tenants-with-dynamically-generated-iam-policies/)
+
 ## Deploy the sample application
 
 - Install prerequisites
