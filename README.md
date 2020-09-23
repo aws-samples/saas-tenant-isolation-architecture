@@ -42,7 +42,8 @@ An AWS CodePipeline executes on change to the repository.
 
 ### Token Vending Layer
 
-This sample uses the [Dynamic Policy Generation](https://github.com/aws-samples/aws-saas-factory-dynamic-policy-generation) library. Read about [Dynamic Policy Generation and the supporting library on the AWS blog](https://aws.amazon.com/blogs/apn/isolating-saas-tenants-with-dynamically-generated-iam-policies/)
+This sample uses the [Dynamic Policy Generation](https://github.com/aws-samples/aws-saas-factory-dynamic-policy-generation) library. Read more on the [Dynamic Policy Generation blogpost](https://aws.amazon.com/blogs/apn/isolating-saas-tenants-with-dynamically-generated-iam-policies/)
+
 
 
 > ⚠️ Warning \
