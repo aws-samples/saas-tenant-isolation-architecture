@@ -2,7 +2,9 @@
 
 This repository contains a small application that implements the principles discussed in the blogpost [Govern access to tenants’ data in your SaaS application using AWS IAM]().
 
-What's the problem this work aims to solve? Ideally IAM roles should be scoped to the minimum set of resource and actions permissions required. In a multi-tenant application, the combination of multiple tenants and services can result in a high number of roles to manage.
+What's the problem this work aims to solve? 
+Ideally IAM roles should be scoped to the smallest set of resource and actions permissions required. 
+In a multi-tenant application, the combination of multiple tenants and services can result in a high number of roles to manage.
 
 ## Overview
 
@@ -25,14 +27,16 @@ This project contains source code and supporting files to deploy the application
 6. The credentials from the [Token Vending Layer](#Token Vending Layer) are used to access the [multi-tenant DynamoDB table](#multi-tenant-dynamodb-table). These credentials are scoped to the tenant, and don't have permission to access other tenants data.
 
 ### ExportTenantData Function
-The `ExportTenantData` function demonstrates a small microservice used by tenants of an application. The ExportTenantData function can store and retrieve data from a multi-tenant DynamoDB table.
+The `ExportTenantData` function demonstrates a small microservice used by tenants of an application. 
+The ExportTenantData function can store and retrieve data from a multi-tenant DynamoDB table.
 
 The `ExportTenantData` function uses the [Lambda Layer](https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html) `TokenVendingLayer` to assume a role with credentials scoped to the tenant making the request.
 
 
 ### Template Pipeline
 
-An AWS CodeCommit repository contains templated IAM Policies. Upon the creation of a tag with prefix `release`, for example `release-1.0`, Amazon CodePipeline creates a zip file of the templates and stores it as an object in S3. The Token Vending Layer retrieves the zipped templates file from S3.
+An AWS CodeCommit repository contains templated IAM Policies. 
+Upon the creation of a tag with prefix `release`, for example `release-1.0`, Amazon CodePipeline creates a zip file of the templates and stores it as an object in S3. The Token Vending Layer retrieves the zipped templates file from S3.
 An AWS CodePipeline executes on change to the repository.
 
 
