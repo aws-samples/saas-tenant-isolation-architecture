@@ -29,7 +29,7 @@ This sample uses the [Dynamic Policy Generation](https://github.com/aws-samples/
 The `AssumeRoleWatchDog` resource is a lambda function. 
 The purpose of the AssumeRoleWatchDog is safeguard against the assumption of a role without an inline policy included. 
 This is important in a multi-tenant environment
-It inspects `AssumeRole` events of the account. If a role is assumed without an inline policy, the watchdog sends a notification to an SNS topic. 
+It inspects `AssumeRole` events of the account. If a role in the account is assumed without an inline policy, the watchdog sends a notification to the `WatchdogSnsTopic` defined in the template.
 
 ## Deploy the sample application
 
