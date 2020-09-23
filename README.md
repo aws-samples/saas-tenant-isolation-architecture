@@ -92,3 +92,5 @@ aws cloudformation delete-stack --stack-name <STACK NAME>
 ```
 
 ## License
+
+This sample is licensed under the MIT-0 license.
