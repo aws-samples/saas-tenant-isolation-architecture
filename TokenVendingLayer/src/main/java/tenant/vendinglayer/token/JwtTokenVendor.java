@@ -1,10 +1,7 @@
 package tenant.vendinglayer.token;
 
-import com.amazon.aws.partners.saasfactory.cognito.JwtClaimsExtractor;
 import com.amazon.aws.partners.saasfactory.exception.PolicyAssumptionException;
 import com.amazon.aws.partners.saasfactory.policy.PolicyGenerator;
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.interfaces.Claim;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSVerifier;
 import com.nimbusds.jose.crypto.MACVerifier;
@@ -29,6 +26,7 @@ import java.util.regex.Pattern;
 public class JwtTokenVendor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtTokenVendor.class);
+    // this is for demonstration purposes only, secret keys should not be hardcoded like this
     private static final String sharedSecret = "%9TdD7G6RjgTdm7K&!A16d%*ed4£DyKs";
     private static final String TENANT_CLAIM = "custom:tenant_id";
     private static final Pattern BEARER_TOKEN_REGEX = Pattern.compile("^[B|b]earer +");
