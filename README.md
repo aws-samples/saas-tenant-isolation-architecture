@@ -44,6 +44,12 @@ An AWS CodePipeline executes on change to the repository.
 
 This sample uses the [Dynamic Policy Generation](https://github.com/aws-samples/aws-saas-factory-dynamic-policy-generation) library. Read about [Dynamic Policy Generation and the supporting library on the AWS blog](https://aws.amazon.com/blogs/apn/isolating-saas-tenants-with-dynamically-generated-iam-policies/)
 
+
+> ⚠️ Warning \
+> This sample uses a hardcoded secret for verifying the JSON web token signature. \
+> This shouldn't copied in an application.\
+> Instead, the application should retrieve the secret from [AWS Systems Manager Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html) or  [AWS Secrets Manager](https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html).
+
 ### Multi-Tenant DynamoDB Table
 
 
