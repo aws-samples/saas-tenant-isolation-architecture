@@ -46,7 +46,7 @@ public class ApiGatewayHandler implements RequestHandler<APIGatewayProxyRequestE
         final AwsCredentialsProvider awsCredentialsProvider =
             tokenVendor.vendTokenJwt(input.getHeaders());
 
-        // we parse the body of the POST request, currently we only accept a 'name' parameter to
+        // we parse the body of the POST request, currently we only accept a 'data' parameter to
         // be written to DynamoDB, anything else will be ignored
         Map<String, String> body;
         try {
@@ -63,7 +63,7 @@ public class ApiGatewayHandler implements RequestHandler<APIGatewayProxyRequestE
 
         // TenantInfo class encapsulates writing to DynamoDB using the enhanced DynamoDB
         // client, which allows us to use POJOs
-        TenantInfo tInfo = new TenantInfo(awsCredentialsProvider, tenant, body.get("name"));
+        TenantInfo tInfo = new TenantInfo(awsCredentialsProvider, tenant, body.get("data"));
         tInfo.save();
 
         Map<String, String> headers = new HashMap<>();

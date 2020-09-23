@@ -14,7 +14,7 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 public class TenantInfo {
 
     private String id;
-    private String name;
+    private String data;
 
     private static final String tableName = System.getenv("DB_TABLE");
 
@@ -34,9 +34,9 @@ public class TenantInfo {
         this.TENANT_TABLE = DDB_ENHANCED_CLIENT.table(tableName, TableSchema.fromBean(TenantInfo.class));
     }
 
-    public TenantInfo(AwsCredentialsProvider awsCredentialsProvider, String tenant, String name) {
+    public TenantInfo(AwsCredentialsProvider awsCredentialsProvider, String tenant, String data) {
         this.id = tenant;
-        this.name = name;
+        this.data = data;
         DynamoDbClient ddb = DynamoDbClient.builder()
             .httpClientBuilder(UrlConnectionHttpClient.builder())
             .credentialsProvider(awsCredentialsProvider)
@@ -57,12 +57,12 @@ public class TenantInfo {
         this.id = tenant;
     }
 
-    public String getName() {
-        return name;
+    public String getData() {
+        return data;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setData(String data) {
+        this.data = data;
     }
 
     public TenantInfo load(TenantInfo tenant) {
