@@ -1,6 +1,6 @@
-# Govern access to tenants’ data in your SaaS application using AWS IAM
+# Saas Tenant Isolation Architecture
 
-This repository contains a small application that implements the principles discussed in the blogpost [Govern access to tenants’ data in your SaaS application using AWS IAM]().
+This repository contains a small application that implements the principles discussed in the [Saas Tenant Isolation Architecture blogpost]().
 
 What's the problem this work aims to solve? 
 Ideally IAM roles should be scoped to the smallest set of resource and actions permissions required. 
