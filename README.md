@@ -8,10 +8,27 @@ What's the problem this work aims to solve? Ideally IAM roles should be scoped t
 
 This project contains source code and supporting files to deploy the application. It implements two lambda functions and a DynamoDB table.
 
+
+
+![Export Tenant Data Diagram](docs/export-tenant-data.png)
+
+1. A CodeCommit repository contains IAM Policy templates. Changes to the templates can be tracked using version control.
+
+2. The creation of a git tag with the prefix `release` invokes a CodePipeline execution, that zips the templates and uploads the file to S3.
+
+3. The Template Bucket contains the uploaded template files. Each object is of the form `templates/$GIT_HASH/policies.zip`
+
+4. A multitenant application makes a request to the [ExportTenantData Function](#ExportTenantData-Function), containing the Authorization Header. The header is of the form `Authorization: Bearer $JWT`. `$JWT` represents a JSON Web Token (JWT). The JWT contains a custom claim, `custom:tenant_id`. This custom claim is used by the [Token Vending Layer](#Token-Vending-Layer) to scope credentials to just the responsible tenant.
+
+5. The [Token Vending Layer](#Token Vending Layer) retrieves the templates from the S3 Bucket. TODO explain further
+
+6. The credentials from the [Token Vending Layer](#Token Vending Layer) are used to access the [multi-tenant DynamoDB table](#multi-tenant-dynamodb-table). These credentials are scoped to the tenant, and don't have permission to access other tenants data.
+
 ### ExportTenantData Function
-The `ExportTenantData` function demonstrates a small microservice used by multiple tenants of an application. The ExportTenantData function can store and retrieve data from a multi-tenant DynamoDB table.
+The `ExportTenantData` function demonstrates a small microservice used by tenants of an application. The ExportTenantData function can store and retrieve data from a multi-tenant DynamoDB table.
 
 The `ExportTenantData` function uses the [Lambda Layer](https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html) `TokenVendingLayer` to assume a role with credentials scoped to the tenant making the request.
+
 
 ### Template Pipeline
 
@@ -22,6 +39,8 @@ An AWS CodePipeline executes on change to the repository.
 ### Token Vending Layer
 
 This sample uses the [Dynamic Policy Generation](https://github.com/aws-samples/aws-saas-factory-dynamic-policy-generation) library. Read about [Dynamic Policy Generation and the supporting library on the AWS blog](https://aws.amazon.com/blogs/apn/isolating-saas-tenants-with-dynamically-generated-iam-policies/)
+
+### Multi-Tenant DynamoDB Table
 
 
 ### AssumeRoleWatchDog
