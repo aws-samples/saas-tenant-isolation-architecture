@@ -35,10 +35,10 @@ To build and deploy your application for the first time, run the following in yo
 ```bash
 export STACK_NAME=<Define the stack name>
 
-# Packaged templates are uploaded to an S3 bucket.
+# The packaged template is uploaded to an S3 bucket.
 export DEPLOYMENT_S3_BUCKET="$STACK_NAME"-packaging-bucket
 
-# The S3 Bucket containing the zipped policy templates to be used
+# The S3 Bucket containing the zipped policy templates to bootstrap the CodeCommit repository
 export TEMPLATE_BUCKET_NAME=<template s3 bucket>
 export TEMPLATE_OBJECT_KEY=<template zip file>
 
