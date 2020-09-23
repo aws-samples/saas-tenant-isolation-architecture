@@ -8,7 +8,7 @@ What is the problem this work aims to solve? Ideally IAM roles should be scoped 
 
 This project contains source code and supporting files to deploy the application. It implements two lambda functions and a DynamoDB table.
 
-The `Description Service` demonstrates a small microservice used by multiple tenants of an application. The ExportTenantData function accesses some tenant data from a multi-tenant DynamoDB table and writes it to an multi-tenant S3 bucket.
+The `ExportTenantData` function demonstrates a small microservice used by multiple tenants of an application. The ExportTenantData function can store and retrieve data from a multi-tenant DynamoDB table.
 
 TODO Add section explaining the Token Vending Machine, assuming role with an inline policy etc
 
