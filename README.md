@@ -1,6 +1,6 @@
 # Govern access to tenants’ data in your SaaS application using AWS IAM
 
-This repository contains a small application to demonstrate the principles discussed in the blogpost [Govern access to tenants’ data in your SaaS application using AWS IAM]().
+This repository contains a small application that implements the principles discussed in the blogpost [Govern access to tenants’ data in your SaaS application using AWS IAM]().
 
 What's the problem this work aims to solve? Ideally IAM roles should be scoped to the minimum set of resource and actions permissions required. In a multi-tenant application, the combination of multiple tenants and services can result in a high number of roles to manage.
 
