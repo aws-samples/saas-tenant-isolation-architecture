@@ -14,9 +14,9 @@ TODO Add section explaining the Token Vending Machine, assuming role with an inl
 
 ### Template Pipeline
 
-Templated IAM Policies are stored and versioned using AWS CodeCommit.
+An AWS CodeCommit repository contains templated IAM Policies. Upon the creation of a tag with prefix `release`, for example `release-1.0`, Amazon CodePipeline creates a zip file of the templates and stores it as an object in S3. The Token Vending Layer retrieves the zipped templates file from S3.
 An AWS CodePipeline executes on change to the repository.
-The IAM policy templates contained in `templates/` are zipped and uploaded to an S3 bucket.
+
 
 ### Token Vending Layer
 
@@ -29,7 +29,7 @@ This sample uses the [Dynamic Policy Generation](https://github.com/aws-samples/
 - Fill env vars
 - Deploy
 
-The application uses several AWS resources, including Lambda functions and an API Gateway API. These resources are defined in the `template.yaml` file in this project.
+The application uses several AWS resources, including Lambda functions and an API Gateway API. The `Resources` section of the file `template.yaml` defines the resources in this project.
 
 - AWS CLI - [Install the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) and [configure it with your AWS credentials].
 - Java8 - [Install the Java SE Development Kit 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
