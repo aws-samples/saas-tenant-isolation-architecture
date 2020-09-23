@@ -23,6 +23,14 @@ An AWS CodePipeline executes on change to the repository.
 
 This sample uses the [Dynamic Policy Generation](https://github.com/aws-samples/aws-saas-factory-dynamic-policy-generation) library. Read about [Dynamic Policy Generation and the supporting library on the AWS blog](https://aws.amazon.com/blogs/apn/isolating-saas-tenants-with-dynamically-generated-iam-policies/)
 
+
+### AssumeRoleWatchDog
+
+The `AssumeRoleWatchDog` resource is a lambda function. 
+The purpose of the AssumeRoleWatchDog is safeguard against the assumption of a role without an inline policy included. 
+This is important in a multi-tenant environment
+It inspects `AssumeRole` events of the account. If a role is assumed without an inline policy, the watchdog sends a notification to an SNS topic. 
+
 ## Deploy the sample application
 
 - Install prerequisites
