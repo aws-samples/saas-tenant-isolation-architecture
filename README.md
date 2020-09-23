@@ -85,7 +85,13 @@ curl \
 
 ## Cleanup
 
-To delete the sample application that you created, use the AWS CLI. Assuming you used your project name for the stack name, you can run the following:
+To delete the deployed sample application, follow the steps below.
+
+1. Delete contents of S3 buckets included in the application.
+    - PipelineArtefactBucket
+    - TemplateOutputBucket
+2. Delete CloudFormation stack. 
+    - To delete the stack with the aws cli, use the following command.
 
 ```bash
 aws cloudformation delete-stack --stack-name <STACK NAME>
