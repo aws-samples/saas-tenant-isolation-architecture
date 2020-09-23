@@ -63,6 +63,8 @@ Test that the deployment was successful by posting and retrieving data from the 
 
 
 Post data to the endpoint
+Set the `URL` variable to the API Gateways Endpoint Output from the CloudFormations stack
+Set the `AUTH` to a valid JWT token. 
 ```bash
 URL=<ENDPOINT URL>
 AUTH=<JWT TOKEN>
