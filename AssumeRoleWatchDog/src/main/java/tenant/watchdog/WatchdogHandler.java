@@ -27,6 +27,7 @@ public class WatchdogHandler implements RequestStreamHandler {
 
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private static final String topicArn = System.getenv("SNS_TOPIC");
+    private static final String searchString = System.getenv("SEARCH_STRING");
     private static final SnsClient snsClient = SnsClient.create();
 
     @Override
@@ -41,7 +42,7 @@ public class WatchdogHandler implements RequestStreamHandler {
 
                 logger.log("RoleArn: " + roleArn);
                 logger.log("Policy: " + policy);
-                if(policy == null) {
+                if(policy == null || !policy.contains(searchString)) {
                     // Publish a message to an Amazon SNS topic.
                     final String msg = "A call to AssumeRoll was made without an inline policy.";
                     PublishRequest publishRequest = PublishRequest.builder()
