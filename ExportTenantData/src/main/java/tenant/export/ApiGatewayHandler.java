@@ -16,7 +16,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import tenant.export.models.TenantInfo;
+import tenant.export.models.TenantProduct;
 
 
 /**
@@ -61,10 +61,10 @@ public class ApiGatewayHandler implements RequestHandler<APIGatewayProxyRequestE
         String tenant = tokenVendor.getTenant();
         logger.info("TENANT ID: " + tenant);
 
-        // TenantInfo class encapsulates writing to DynamoDB using the enhanced DynamoDB
+        // TenantProduct class encapsulates writing to DynamoDB using the enhanced DynamoDB
         // client, which allows us to use POJOs
-        TenantInfo tInfo = new TenantInfo(awsCredentialsProvider, tenant, body.get("data"));
-        tInfo.save();
+        TenantProduct tenantProduct = new TenantProduct(awsCredentialsProvider, tenant, body.get("data"));
+        tenantProduct.save();
 
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
@@ -84,14 +84,14 @@ public class ApiGatewayHandler implements RequestHandler<APIGatewayProxyRequestE
         String tenant = tokenVendor.getTenant();
         logger.info("TENANT ID: " + tenant);
 
-        // TenantInfo class encapsulates writing to DynamoDB using the enhanced DynamoDB
+        // TenantProduct class encapsulates writing to DynamoDB using the enhanced DynamoDB
         // client, which allows us to use POJOs
-        TenantInfo tInfo = new TenantInfo(awsCredentialsProvider, tenant);
-        tInfo = tInfo.load(tInfo);
+        TenantProduct tenantProduct = new TenantProduct(awsCredentialsProvider, tenant);
+        tenantProduct = tenantProduct.load(tenantProduct);
 
         String body;
         try {
-            body = mapper.writeValueAsString(tInfo);
+            body = mapper.writeValueAsString(tenantProduct);
         } catch (JsonProcessingException e) {
             logger.error("Error parsing JSON body.", e);
             throw new RuntimeException(createBadRequestResponse(context.getAwsRequestId(),

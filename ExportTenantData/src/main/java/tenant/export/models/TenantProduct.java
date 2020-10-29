@@ -11,18 +11,18 @@ import software.amazon.awssdk.http.urlconnection.UrlConnectionHttpClient;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
 @DynamoDbBean
-public class TenantInfo {
+public class TenantProduct {
 
     private String id;
     private String data;
 
     private static final String tableName = System.getenv("DB_TABLE");
 
-    private DynamoDbTable<TenantInfo> TENANT_TABLE;
+    private DynamoDbTable<TenantProduct> TENANT_TABLE;
 
-    public TenantInfo() {}
+    public TenantProduct() {}
 
-    public TenantInfo(AwsCredentialsProvider awsCredentialsProvider, String tenant) {
+    public TenantProduct(AwsCredentialsProvider awsCredentialsProvider, String tenant) {
         DynamoDbClient ddb = DynamoDbClient.builder()
             .httpClientBuilder(UrlConnectionHttpClient.builder())
             .credentialsProvider(awsCredentialsProvider)
@@ -31,10 +31,10 @@ public class TenantInfo {
         DynamoDbEnhancedClient DDB_ENHANCED_CLIENT =
             DynamoDbEnhancedClient.builder().dynamoDbClient(ddb).build();
         this.id = tenant;
-        this.TENANT_TABLE = DDB_ENHANCED_CLIENT.table(tableName, TableSchema.fromBean(TenantInfo.class));
+        this.TENANT_TABLE = DDB_ENHANCED_CLIENT.table(tableName, TableSchema.fromBean(TenantProduct.class));
     }
 
-    public TenantInfo(AwsCredentialsProvider awsCredentialsProvider, String tenant, String data) {
+    public TenantProduct(AwsCredentialsProvider awsCredentialsProvider, String tenant, String data) {
         this.id = tenant;
         this.data = data;
         DynamoDbClient ddb = DynamoDbClient.builder()
@@ -44,7 +44,7 @@ public class TenantInfo {
 
         DynamoDbEnhancedClient DDB_ENHANCED_CLIENT =
             DynamoDbEnhancedClient.builder().dynamoDbClient(ddb).build();
-        this.TENANT_TABLE = DDB_ENHANCED_CLIENT.table(tableName, TableSchema.fromBean(TenantInfo.class));
+        this.TENANT_TABLE = DDB_ENHANCED_CLIENT.table(tableName, TableSchema.fromBean(TenantProduct.class));
     }
 
     @DynamoDbPartitionKey
@@ -65,7 +65,7 @@ public class TenantInfo {
         this.data = data;
     }
 
-    public TenantInfo load(TenantInfo tenant) {
+    public TenantProduct load(TenantProduct tenant) {
         return TENANT_TABLE.getItem(tenant);
     }
 

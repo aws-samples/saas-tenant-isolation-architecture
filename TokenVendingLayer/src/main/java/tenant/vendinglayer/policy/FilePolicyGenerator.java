@@ -1,14 +1,9 @@
 package tenant.vendinglayer.policy;
 
-import com.amazon.aws.partners.saasfactory.policy.PolicyGenerator;
-import com.amazon.aws.partners.saasfactory.template.PolicyTemplateProcessor;
+import tenant.vendinglayer.template.PolicyTemplateProcessor;
 import tenant.vendinglayer.template.PolicyLoader;
 
 import java.io.File;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class FilePolicyGenerator implements PolicyGenerator {
