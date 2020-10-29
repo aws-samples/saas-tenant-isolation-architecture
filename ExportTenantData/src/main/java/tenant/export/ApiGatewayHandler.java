@@ -91,7 +91,7 @@ public class ApiGatewayHandler implements RequestHandler<APIGatewayProxyRequestE
 
         String body;
         try {
-            body = mapper.writeValueAsString(tentantProduct);
+            body = mapper.writeValueAsString(tenantProduct);
         } catch (JsonProcessingException e) {
             logger.error("Error parsing JSON body.", e);
             throw new RuntimeException(createBadRequestResponse(context.getAwsRequestId(),
