@@ -61,7 +61,7 @@ public class ApiGatewayHandler implements RequestHandler<APIGatewayProxyRequestE
         String tenant = tokenVendor.getTenant();
         logger.info("TENANT ID: " + tenant);
 
-        // TenantInfo class encapsulates writing to DynamoDB using the enhanced DynamoDB
+        // TenantProduct class encapsulates writing to DynamoDB using the enhanced DynamoDB
         // client, which allows us to use POJOs
         TenantProduct tentantProduct = new TenantProduct(awsCredentialsProvider, tenant, body.get("data"));
         tentantProduct.save();
@@ -84,7 +84,7 @@ public class ApiGatewayHandler implements RequestHandler<APIGatewayProxyRequestE
         String tenant = tokenVendor.getTenant();
         logger.info("TENANT ID: " + tenant);
 
-        // TenantentantProduct class encapsulates writing to DynamoDB using the enhanced DynamoDB
+        // TenantProduct class encapsulates writing to DynamoDB using the enhanced DynamoDB
         // client, which allows us to use POJOs
         TenantProduct tentantProduct = new TenantProduct(awsCredentialsProvider, tenant);
         tentantProduct = tentantProduct.load(tentantProduct);
