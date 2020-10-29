@@ -16,7 +16,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import tenant.export.models.TenantInfo;
+import tenant.export.models.TenantProduct;
 
 
 /**
@@ -46,7 +46,7 @@ public class ApiGatewayHandler implements RequestHandler<APIGatewayProxyRequestE
         final AwsCredentialsProvider awsCredentialsProvider =
             tokenVendor.vendTokenJwt(input.getHeaders());
 
-        // we parse the body of the POST request, currently we only accept a 'tenantProduct' parameter to
+        // we parse the body of the POST request, currently we only accept a 'data' parameter to
         // be written to DynamoDB, anything else will be ignored
         Map<String, String> body;
         try {
@@ -63,8 +63,8 @@ public class ApiGatewayHandler implements RequestHandler<APIGatewayProxyRequestE
 
         // TenantInfo class encapsulates writing to DynamoDB using the enhanced DynamoDB
         // client, which allows us to use POJOs
-        TenantInfo tInfo = new TenantInfo(awsCredentialsProvider, tenant, body.get("tenantProduct"));
-        tInfo.save();
+        TenantProduct tentantProduct = new TenantProduct(awsCredentialsProvider, tenant, body.get("data"));
+        tentantProduct.save();
 
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
@@ -84,14 +84,14 @@ public class ApiGatewayHandler implements RequestHandler<APIGatewayProxyRequestE
         String tenant = tokenVendor.getTenant();
         logger.info("TENANT ID: " + tenant);
 
-        // TenantInfo class encapsulates writing to DynamoDB using the enhanced DynamoDB
+        // TenantentantProduct class encapsulates writing to DynamoDB using the enhanced DynamoDB
         // client, which allows us to use POJOs
-        TenantInfo tInfo = new TenantInfo(awsCredentialsProvider, tenant);
-        tInfo = tInfo.load(tInfo);
+        TenantProduct tentantProduct = new TenantProduct(awsCredentialsProvider, tenant);
+        tentantProduct = tentantProduct.load(tentantProduct);
 
         String body;
         try {
-            body = mapper.writeValueAsString(tInfo);
+            body = mapper.writeValueAsString(tentantProduct);
         } catch (JsonProcessingException e) {
             logger.error("Error parsing JSON body.", e);
             throw new RuntimeException(createBadRequestResponse(context.getAwsRequestId(),
