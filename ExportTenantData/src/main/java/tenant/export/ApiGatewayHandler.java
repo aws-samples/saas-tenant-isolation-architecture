@@ -86,7 +86,7 @@ public class ApiGatewayHandler implements RequestHandler<APIGatewayProxyRequestE
 
         // TenantProduct class encapsulates writing to DynamoDB using the enhanced DynamoDB
         // client, which allows us to use POJOs
-        TenantProduct tentantProduct = new TenantProduct(awsCredentialsProvider, tenant);
+        TenantProduct tenantProduct = new TenantProduct(awsCredentialsProvider, tenant);
         tentantProduct = tentantProduct.load(tentantProduct);
 
         String body;
