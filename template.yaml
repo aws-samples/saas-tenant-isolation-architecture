@@ -118,6 +118,7 @@ Resources:
       Environment:
         Variables:
           SNS_TOPIC: !Ref WatchdogSnsTopic
+          SEARCH_STRING: 'dynamodb: LeadingKeys'
       Policies:
         - AWSLambdaExecute
         - Version: "2012-10-17"
