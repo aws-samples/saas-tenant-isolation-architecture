@@ -1,8 +1,8 @@
 STACK_NAME?="hmb29"
 
-DEPLOYMENT_S3_BUCKET?="svozza-local-cfn"
-TEMPLATE_BUCKET_NAME?="svozza-local-cfn"
-TEMPLATE_OBJECT_KEY?="example-templates.zip"
+DEPLOYMENT_S3_BUCKET?=""
+TEMPLATE_BUCKET_NAME?=""
+TEMPLATE_OBJECT_KEY="example-templates.zip"
 
 LAYER_JAR="TokenVendingLayer.jar"
 
