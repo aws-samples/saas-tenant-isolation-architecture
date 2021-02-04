@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 
-Description: Govern access to tenants data in your SaaS application using AWS IAM.
+Description: Govern access to tenants data in your SaaS application using AWS IAM. (uksb-1ripd9gui)
 
 Globals:
   Function:
