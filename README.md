@@ -1,6 +1,6 @@
 # Saas Tenant Isolation Architecture
 
-This repository contains a small application that implements the principles discussed in the [Saas Tenant Isolation Architecture blogpost]().
+This repository contains a small application that implements the principles discussed in the [Saas Tenant Isolation Architecture blogpost](https://aws.amazon.com/blogs/apn/applying-dynamically-generated-isolation-policies-in-saas-environments/).
 
 What's the problem this work aims to solve? 
 Ideally IAM roles should be scoped to the smallest set of resource and actions permissions required. 
