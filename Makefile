@@ -1,4 +1,4 @@
-STACK_NAME?="hmb29"
+STACK_NAME?="saas-tenant-isolation-architecture-example"
 
 DEPLOYMENT_S3_BUCKET?=""
 TEMPLATE_BUCKET_NAME?=""
