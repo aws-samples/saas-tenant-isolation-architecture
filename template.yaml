@@ -142,7 +142,9 @@ Resources:
 
   TargetBucket:
     Type: AWS::S3::Bucket
-
+    Properties:
+      VersioningConfiguration:
+        Status: Enabled
 
   TargetBucketPolicy:
     Type: AWS::S3::BucketPolicy
@@ -316,6 +318,9 @@ Resources:
 
   TemplateOutputBucket:
     Type: AWS::S3::Bucket
+    Properties:
+      VersioningConfiguration:
+        Status: Enabled
 
   TemplateRepository:
     Type: AWS::CodeCommit::Repository
