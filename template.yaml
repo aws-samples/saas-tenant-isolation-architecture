@@ -358,7 +358,7 @@ Resources:
             - referenceCreated
             - referenceUpdated
           referenceName:
-            - master
+            - main
           referenceType:
             - branch
         detail-type:
