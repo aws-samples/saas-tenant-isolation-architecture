@@ -192,7 +192,7 @@ Resources:
                 Provider: CodeCommit
                 Version: "1"
               Configuration:
-                BranchName: "master"
+                BranchName: "main"
                 PollForSourceChanges: false
                 RepositoryName: !GetAtt TemplateRepository.Name
               OutputArtifacts:
