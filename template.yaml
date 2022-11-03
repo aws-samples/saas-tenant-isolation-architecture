@@ -107,6 +107,8 @@ Resources:
 
   WatchdogSnsTopic:
     Type: AWS::SNS::Topic
+    Properties:
+      KmsMasterKeyId: alias/aws/sns
 
   AssumeRoleWatchdogFunction:
     Type: AWS::Serverless::Function
