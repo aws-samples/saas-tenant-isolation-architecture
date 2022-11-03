@@ -143,6 +143,22 @@ Resources:
   TargetBucket:
     Type: AWS::S3::Bucket
 
+
+  TargetBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref TargetBucket
+      PolicyDocument:
+        Statement:
+          - Sid: HttpsOnly
+            Action: "*"
+            Effect: Deny
+            Resource: !Sub arn:${AWS::Partition}:s3:::${TargetBucket}/*
+            Principal: "*"
+            Condition:
+              Bool:
+                aws:SecureTransport: false
+
   DynamoDBClientStore:
     Type: AWS::DynamoDB::Table
     Properties:
