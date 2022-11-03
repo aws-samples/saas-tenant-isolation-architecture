@@ -322,6 +322,21 @@ Resources:
       VersioningConfiguration:
         Status: Enabled
 
+  TemplateOutputBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref TemplateOutputBucket
+      PolicyDocument:
+        Statement:
+          - Sid: HttpsOnly
+            Action: "*"
+            Effect: Deny
+            Resource: !Sub arn:${AWS::Partition}:s3:::${TemplateOutputBucket}/*
+            Principal: "*"
+            Condition:
+              Bool:
+                aws:SecureTransport: false
+
   TemplateRepository:
     Type: AWS::CodeCommit::Repository
     Properties:
