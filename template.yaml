@@ -107,6 +107,8 @@ Resources:
 
   WatchdogSnsTopic:
     Type: AWS::SNS::Topic
+    Properties:
+      KmsMasterKeyId: alias/aws/sns
 
   AssumeRoleWatchdogFunction:
     Type: AWS::Serverless::Function
@@ -142,6 +144,24 @@ Resources:
 
   TargetBucket:
     Type: AWS::S3::Bucket
+    Properties:
+      VersioningConfiguration:
+        Status: Enabled
+
+  TargetBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref TargetBucket
+      PolicyDocument:
+        Statement:
+          - Sid: HttpsOnly
+            Action: "*"
+            Effect: Deny
+            Resource: !Sub arn:${AWS::Partition}:s3:::${TargetBucket}/*
+            Principal: "*"
+            Condition:
+              Bool:
+                aws:SecureTransport: false
 
   DynamoDBClientStore:
     Type: AWS::DynamoDB::Table
@@ -172,7 +192,7 @@ Resources:
                 Provider: CodeCommit
                 Version: "1"
               Configuration:
-                BranchName: "master"
+                BranchName: "main"
                 PollForSourceChanges: false
                 RepositoryName: !GetAtt TemplateRepository.Name
               OutputArtifacts:
@@ -300,6 +320,24 @@ Resources:
 
   TemplateOutputBucket:
     Type: AWS::S3::Bucket
+    Properties:
+      VersioningConfiguration:
+        Status: Enabled
+
+  TemplateOutputBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref TemplateOutputBucket
+      PolicyDocument:
+        Statement:
+          - Sid: HttpsOnly
+            Action: "*"
+            Effect: Deny
+            Resource: !Sub arn:${AWS::Partition}:s3:::${TemplateOutputBucket}/*
+            Principal: "*"
+            Condition:
+              Bool:
+                aws:SecureTransport: false
 
   TemplateRepository:
     Type: AWS::CodeCommit::Repository
@@ -320,7 +358,7 @@ Resources:
             - referenceCreated
             - referenceUpdated
           referenceName:
-            - master
+            - main
           referenceType:
             - branch
         detail-type:
